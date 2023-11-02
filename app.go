@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"os"
 	"time"
@@ -25,7 +26,7 @@ func NewApp() *App {
 	return &App{}
 }
 
-func appendToJSONFile(filename, website, email, password string) error {
+func appendToJSONFile(filename, website, email, password string) string {
 	// Convert input parameters to UserData struct
 	data := UserData{
 		Website:  website,
@@ -42,7 +43,7 @@ func appendToJSONFile(filename, website, email, password string) error {
 		defer file.Close()
 		decoder := json.NewDecoder(file)
 		if err := decoder.Decode(&existingData); err != nil {
-			return err
+			return fmt.Sprintf("Error: %v", err)
 		}
 	}
 
@@ -52,17 +53,17 @@ func appendToJSONFile(filename, website, email, password string) error {
 	// Create/open the JSON for writing
 	file, err = os.Create(filename)
 	if err != nil {
-		return err
+		return fmt.Sprintf("Error: %v", err)
 	}
 	defer file.Close()
 
 	// Encode and write updated data to the file
 	encoder := json.NewEncoder(file)
 	if err := encoder.Encode(existingData); err != nil {
-		return err
+		return fmt.Sprintf("Error: %v", err)
 	}
 
-	return nil
+	return "Successful"
 }
 
 func palindrome(s string) bool {
@@ -103,6 +104,6 @@ func (a *App) Palindrome(s string) bool {
 	return palindrome(s)
 }
 
-func (a *App) Add(filename, website, email, password string) error {
+func (a *App) Add(filename, website, email, password string) string {
 	return appendToJSONFile(filename, website, email, password)
 }
