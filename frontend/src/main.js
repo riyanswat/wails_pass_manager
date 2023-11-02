@@ -5,6 +5,7 @@ import clipboardy from "clipboardy";
 import logo from "./assets/images/logo-universal.jpg";
 import { Generate } from "../wailsjs/go/main/App";
 import { Palindrome } from "../wailsjs/go/main/App";
+import { Add } from "../wailsjs/go/main/App";
 
 document.getElementById("logo").src = logo;
 
@@ -14,11 +15,30 @@ const websiteElement = document.getElementById("website");
 const emailElement = document.getElementById("email");
 
 // BUTTONS:
-// const generateBtn = document.getElementById("generate-btn");
-// const addBtn = document.getElementById("add-btn");
-// const searchBtn = document.getElementById("search-btn");
-// const editBtn = document.getElementById("edit-btn");
-// const deleteBtn = document.getElementById("delete-btn");
+const generateBtn = document.getElementById("generate-btn");
+const addBtn = document.getElementById("add-btn");
+const searchBtn = document.getElementById("search-btn");
+const editBtn = document.getElementById("edit-btn");
+const deleteBtn = document.getElementById("delete-btn");
+
+window.add_data = function () {
+  try {
+    Add(
+      "data.json",
+      websiteElement.value,
+      emailElement.value,
+      passElement.value
+    )
+      .then((res) => {
+        document.getElementById("result").innerText = res;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 window.pal = function () {
   // checkStr = websiteElement.value;
@@ -65,21 +85,21 @@ window.generate = function () {
 
 // ================================
 
-document.getElementById("submit").addEventListener("click", function (event) {
-  event.preventDefault(); // Prevent the default form submission
+// document.getElementById("submit").addEventListener("click", function (event) {
+//   event.preventDefault(); // Prevent the default form submission
 
-  // Get data from the form
-  const website = document.getElementById("website").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+//   // Get data from the form
+//   const website = document.getElementById("website").value;
+//   const email = document.getElementById("email").value;
+//   const password = document.getElementById("password").value;
 
-  // Create a data object
-  const formData = {
-    website,
-    email,
-    password,
-  };
+//   // Create a data object
+//   const formData = {
+//     website,
+//     email,
+//     password,
+//   };
 
-  // Send the data to the backend
-  wails.Events.Emit("formData", formData);
-});
+//   // Send the data to the backend
+//   wails.Events.Emit("formData", formData);
+// });

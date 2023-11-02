@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"math/rand"
+	"os"
 	"time"
-	// "encoding/json"
 )
 
 // user json struct
@@ -22,6 +23,46 @@ type App struct {
 // NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{}
+}
+
+func appendToJSONFile(filename, website, email, password string) error {
+	// Convert input parameters to UserData struct
+	data := UserData{
+		Website:  website,
+		Email:    email,
+		Password: password,
+	}
+
+	// Read existing JSON file
+	var existingData []UserData
+	file, err := os.Open(filename)
+	if err != nil {
+		existingData = make([]UserData, 0)
+	} else {
+		defer file.Close()
+		decoder := json.NewDecoder(file)
+		if err := decoder.Decode(&existingData); err != nil {
+			return err
+		}
+	}
+
+	// Append new data
+	existingData = append(existingData, data)
+
+	// Create/open the JSON for writing
+	file, err = os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Encode and write updated data to the file
+	encoder := json.NewEncoder(file)
+	if err := encoder.Encode(existingData); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func palindrome(s string) bool {
@@ -53,11 +94,15 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Generates a random password of length 'length'
+// Expose backend apis to frontened
 func (a *App) Generate(length int) string {
 	return generateRandomPassword(length)
 }
 
 func (a *App) Palindrome(s string) bool {
 	return palindrome(s)
+}
+
+func (a *App) Add(filename, website, email, password string) error {
+	return appendToJSONFile(filename, website, email, password)
 }
