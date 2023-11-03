@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+
+	// "fmt"
 	"math/rand"
 	"os"
+	"regexp"
 	"time"
 )
 
@@ -26,12 +28,22 @@ func NewApp() *App {
 	return &App{}
 }
 
-func appendToJSONFile(filename, website, email, password string) string {
+func addToJSON(filename, website, email, password string) bool {
 	// Convert input parameters to UserData struct
 	data := UserData{
 		Website:  website,
 		Email:    email,
 		Password: password,
+	}
+
+	if password == "" || website == "" || email == "" {
+		return false // "Empty field(s) spotted!!!"
+	}
+	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	re := regexp.MustCompile(emailRegex)
+
+	if !re.MatchString(email) {
+		return false
 	}
 
 	// Read existing JSON file
@@ -43,7 +55,7 @@ func appendToJSONFile(filename, website, email, password string) string {
 		defer file.Close()
 		decoder := json.NewDecoder(file)
 		if err := decoder.Decode(&existingData); err != nil {
-			return fmt.Sprintf("Error: %v", err)
+			return false // fmt.Sprintf("Error: %v", err)
 		}
 	}
 
@@ -53,17 +65,17 @@ func appendToJSONFile(filename, website, email, password string) string {
 	// Create/open the JSON for writing
 	file, err = os.Create(filename)
 	if err != nil {
-		return fmt.Sprintf("Error: %v", err)
+		return false // fmt.Sprintf("Error: %v", err)
 	}
 	defer file.Close()
 
 	// Encode and write updated data to the file
 	encoder := json.NewEncoder(file)
 	if err := encoder.Encode(existingData); err != nil {
-		return fmt.Sprintf("Error: %v", err)
+		return false // fmt.Sprintf("Error: %v", err)
 	}
 
-	return "Successful"
+	return true // "Successful"
 }
 
 func palindrome(s string) bool {
@@ -104,6 +116,6 @@ func (a *App) Palindrome(s string) bool {
 	return palindrome(s)
 }
 
-func (a *App) Add(filename, website, email, password string) string {
-	return appendToJSONFile(filename, website, email, password)
+func (a *App) Add(filename, website, email, password string) bool {
+	return addToJSON(filename, website, email, password)
 }

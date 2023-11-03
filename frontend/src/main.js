@@ -1,15 +1,17 @@
 import "./style.css";
 import "./app.css";
 import clipboardy from "clipboardy";
+import Swal from "sweetalert2";
 
 import logo from "./assets/images/logo-universal.jpg";
+// backend apis:
 import { Generate } from "../wailsjs/go/main/App";
 import { Palindrome } from "../wailsjs/go/main/App";
 import { Add } from "../wailsjs/go/main/App";
 
 document.getElementById("logo").src = logo;
 
-// INPUT fields data
+// INPUT FIELDS
 const passElement = document.getElementById("password");
 const websiteElement = document.getElementById("website");
 const emailElement = document.getElementById("email");
@@ -21,7 +23,16 @@ const searchBtn = document.getElementById("search-btn");
 const editBtn = document.getElementById("edit-btn");
 const deleteBtn = document.getElementById("delete-btn");
 
+// ===================================================
+
+// ===================================================
+
 window.add_data = function () {
+  // if (passElement.value == "") {
+  //   document.getElementById("result").innerText = "empty pass";
+  //   return;
+  // }
+
   try {
     Add(
       "data.json",
@@ -30,7 +41,15 @@ window.add_data = function () {
       passElement.value
     )
       .then((res) => {
-        document.getElementById("result").innerText = res;
+        if (res) {
+          document.getElementById("result").innerText = `Successful: ${res}`;
+          websiteElement.value = "";
+          emailElement.value = "";
+          passElement.value = "";
+        }
+        if (!res) {
+          document.getElementById("result").innerText = `Error: ${res}`;
+        }
       })
       .catch((err) => {
         console.error(err);

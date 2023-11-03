@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Password manager</title>
   </head>
   <body>
     <div id="app" class="container">
@@ -12,7 +12,10 @@
         <img id="logo" class="logo" draggable="false" />
       </div>
       <!--  -->
-      <div id="result">RESULT HERE</div>
+      <div id="result">Result</div>
+      <!-- <div id="result" class="tooltip">
+        RESULT HERE<span class="tooltiptext">Tooltip text</span>
+      </div> -->
       <!--  -->
       <div class="inputs">
         <div class="header"></div>
@@ -55,11 +58,12 @@
           <div class="btn" id="add-btn" onclick="add_data()">Add</div>
           <div class="btn" id="search-btn">Search</div>
           <div class="btn" id="edit-btn">Edit</div>
-          <div class="btn" id="submit">Delete</div>
+          <div class="btn" id="delete-btn">Delete</div>
         </div>
       </div>
     </div>
 
     <script src="./src/main.js" type="module"></script>
+    <script src="./src/alerts.js" type="module"></script>
   </body>
 </html>
