@@ -1,15 +1,9 @@
-import "./style.css";
-import "./app.css";
 import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
+import { showAlert } from "./utils";
 
-import logo from "./assets/images/logo-universal.jpg";
 // backend apis:
-import { Generate } from "../wailsjs/go/main/App";
-import { Palindrome } from "../wailsjs/go/main/App";
-import { Add } from "../wailsjs/go/main/App";
-
-document.getElementById("logo").src = logo;
+import { Generate, Add } from "../wailsjs/go/main/App";
 
 // INPUT FIELDS
 const passElement = document.getElementById("password");
@@ -22,12 +16,13 @@ const addBtn = document.getElementById("add-btn");
 const searchBtn = document.getElementById("search-btn");
 const editBtn = document.getElementById("edit-btn");
 const deleteBtn = document.getElementById("delete-btn");
+const alertMessage = document.getElementById("alertMessage");
 
 // ===================================================
 
 // ===================================================
 
-window.add_data = function () {
+addBtn.onclick = function () {
   // if (passElement.value == "") {
   //   document.getElementById("result").innerText = "empty pass";
   //   return;
@@ -48,7 +43,8 @@ window.add_data = function () {
           passElement.value = "";
         }
         if (!res) {
-          document.getElementById("result").innerText = `Error: ${res}`;
+          showAlert(alertMessage, `Error: ${res}`);
+          // document.getElementById("result").innerText = `Error: ${res}`;
         }
       })
       .catch((err) => {
@@ -59,21 +55,11 @@ window.add_data = function () {
   }
 };
 
-window.pal = function () {
-  // checkStr = websiteElement.value;
-
-  try {
-    Palindrome(websiteElement.value)
-      .then((res) => {
-        document.getElementById("email").value = res;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  } catch (err) {
-    console.error(err);
-  }
-};
+// ...
+generateBtn.addEventListener("click", () => {
+  generate();
+  showAlert(alertMessage, "Password generated");
+});
 
 window.generate = function () {
   let length = 8;
@@ -85,6 +71,7 @@ window.generate = function () {
       .then((result) => {
         // Update result with data back from App.Generate()
         passElement.value = result;
+
         // Copy the result to the clipboard asynchronously
         clipboardy.write(result, function (err) {
           if (err) {

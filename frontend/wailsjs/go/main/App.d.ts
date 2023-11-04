@@ -4,5 +4,3 @@
 export function Add(arg1:string,arg2:string,arg3:string,arg4:string):Promise<boolean>;
 
 export function Generate(arg1:number):Promise<string>;
-
-export function Palindrome(arg1:string):Promise<boolean>;

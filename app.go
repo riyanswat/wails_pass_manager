@@ -78,14 +78,6 @@ func addToJSON(filename, website, email, password string) bool {
 	return true // "Successful"
 }
 
-func palindrome(s string) bool {
-	reversed := ""
-	for _, c := range s {
-		reversed = string(c) + reversed
-	}
-	return reversed == s
-}
-
 func generateRandomPassword(length int) string {
 	lower := "abcdefghijklmnopqrstuvwxyz"
 	upper := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -110,10 +102,6 @@ func (a *App) startup(ctx context.Context) {
 // Expose backend apis to frontened
 func (a *App) Generate(length int) string {
 	return generateRandomPassword(length)
-}
-
-func (a *App) Palindrome(s string) bool {
-	return palindrome(s)
 }
 
 func (a *App) Add(filename, website, email, password string) bool {

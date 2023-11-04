@@ -9,7 +9,3 @@ export function Add(arg1, arg2, arg3, arg4) {
 export function Generate(arg1) {
   return window['go']['main']['App']['Generate'](arg1);
 }
-
-export function Palindrome(arg1) {
-  return window['go']['main']['App']['Palindrome'](arg1);
-}
