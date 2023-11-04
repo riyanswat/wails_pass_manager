@@ -1,12 +1,3 @@
-const notifier = require("node-notifier");
-
-// Replace 'Success Message' with your desired success message.
-notifier.notify({
-  title: "Success",
-  message: "Success Message",
-  timeout: 2000, // Time in milliseconds (2 seconds in this case)
-});
-
 // import Swal from "sweetalert2";
 
 // const generateBtn = document.getElementById("generate-btn");

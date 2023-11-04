@@ -36,13 +36,15 @@ addBtn.onclick = function () {
       passElement.value
     )
       .then((res) => {
-        if (res) {
-          document.getElementById("result").innerText = `Successful: ${res}`;
+        if (res == "Successful") {
+          // document.getElementById("result").innerText = `${res}`;
+          showAlert(alertMessage, `${res}`);
+
           websiteElement.value = "";
           emailElement.value = "";
           passElement.value = "";
         }
-        if (!res) {
+        if (res != "Successful") {
           showAlert(alertMessage, `Error: ${res}`);
           // document.getElementById("result").innerText = `Error: ${res}`;
         }
