@@ -28,8 +28,8 @@ func NewApp() *App {
 	return &App{}
 }
 
-func addToJSON(filename, website, email, password string) bool {
-	// Convert input parameters to UserData struct
+func addToJSON(filename, website, email, password string) string {
+	// Convert input args to UserData struct
 	data := UserData{
 		Website:  website,
 		Email:    email,
@@ -37,13 +37,13 @@ func addToJSON(filename, website, email, password string) bool {
 	}
 
 	if password == "" || website == "" || email == "" {
-		return false // "Empty field(s) spotted!!!"
+		return "Fill all fields"
 	}
 	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 	re := regexp.MustCompile(emailRegex)
 
 	if !re.MatchString(email) {
-		return false
+		return "Invalid email"
 	}
 
 	// Read existing JSON file
@@ -55,7 +55,7 @@ func addToJSON(filename, website, email, password string) bool {
 		defer file.Close()
 		decoder := json.NewDecoder(file)
 		if err := decoder.Decode(&existingData); err != nil {
-			return false // fmt.Sprintf("Error: %v", err)
+			return "Error decoding json"
 		}
 	}
 
@@ -65,17 +65,17 @@ func addToJSON(filename, website, email, password string) bool {
 	// Create/open the JSON for writing
 	file, err = os.Create(filename)
 	if err != nil {
-		return false // fmt.Sprintf("Error: %v", err)
+		return "Error creating data file"
 	}
 	defer file.Close()
 
 	// Encode and write updated data to the file
 	encoder := json.NewEncoder(file)
 	if err := encoder.Encode(existingData); err != nil {
-		return false // fmt.Sprintf("Error: %v", err)
+		return "Error writing to json"
 	}
 
-	return true // "Successful"
+	return "Successful"
 }
 
 func generateRandomPassword(length int) string {
@@ -104,6 +104,6 @@ func (a *App) Generate(length int) string {
 	return generateRandomPassword(length)
 }
 
-func (a *App) Add(filename, website, email, password string) bool {
+func (a *App) Add(filename, website, email, password string) string {
 	return addToJSON(filename, website, email, password)
 }

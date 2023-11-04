@@ -1,9 +1,11 @@
 import clipboardy from "clipboardy";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { showAlert } from "./utils";
 
 // backend apis:
 import { Generate, Add } from "../wailsjs/go/main/App";
+
+// ===================================================
 
 // INPUT FIELDS
 const passElement = document.getElementById("password");
@@ -17,8 +19,6 @@ const searchBtn = document.getElementById("search-btn");
 const editBtn = document.getElementById("edit-btn");
 const deleteBtn = document.getElementById("delete-btn");
 const alertMessage = document.getElementById("alertMessage");
-
-// ===================================================
 
 // ===================================================
 
@@ -63,7 +63,6 @@ generateBtn.addEventListener("click", () => {
 
 window.generate = function () {
   let length = 8;
-  // resultElement.style.display = "block";
 
   // Call App.Generate(length)
   try {
@@ -88,24 +87,3 @@ window.generate = function () {
     console.error(err);
   }
 };
-
-// ================================
-
-// document.getElementById("submit").addEventListener("click", function (event) {
-//   event.preventDefault(); // Prevent the default form submission
-
-//   // Get data from the form
-//   const website = document.getElementById("website").value;
-//   const email = document.getElementById("email").value;
-//   const password = document.getElementById("password").value;
-
-//   // Create a data object
-//   const formData = {
-//     website,
-//     email,
-//     password,
-//   };
-
-//   // Send the data to the backend
-//   wails.Events.Emit("formData", formData);
-// });
