@@ -3,4 +3,6 @@
 
 export function Add(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
 
+export function Delete(arg1:string,arg2:string):Promise<string>;
+
 export function Generate(arg1:number):Promise<string>;

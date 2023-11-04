@@ -3,7 +3,7 @@ import clipboardy from "clipboardy";
 import { showAlert } from "./utils";
 
 // backend apis:
-import { Generate, Add } from "../wailsjs/go/main/App";
+import { Generate, Add, Delete } from "../wailsjs/go/main/App";
 
 // ===================================================
 
@@ -48,6 +48,35 @@ addBtn.onclick = function () {
           showAlert(alertMessage, `Error: ${res}`);
           // document.getElementById("result").innerText = `Error: ${res}`;
         }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// ...
+
+deleteBtn.onclick = function () {
+  try {
+    Delete("data.json", websiteElement.value)
+      .then((res) => {
+        showAlert(alertMessage, res);
+        websiteElement.value = "";
+        // if (res == "Successful") {
+        //   // document.getElementById("result").innerText = `${res}`;
+        //   showAlert(alertMessage, `${res}`);
+
+        //   websiteElement.value = "";
+        //   emailElement.value = "";
+        //   passElement.value = "";
+        // }
+        // if (res != "Successful") {
+        //   showAlert(alertMessage, `Error: ${res}`);
+        //   // document.getElementById("result").innerText = `Error: ${res}`;
+        // }
       })
       .catch((err) => {
         console.error(err);
