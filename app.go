@@ -30,7 +30,7 @@ func NewApp() *App {
 }
 
 func addToJSON(website, email, password string) string {
-	filename := "data.json"
+	filename := "./frontend/data.json"
 
 	// Convert input args to UserData struct
 	data := UserData{
@@ -82,7 +82,7 @@ func addToJSON(website, email, password string) string {
 }
 
 func deleteFromJSON(websiteToDelete string) string {
-	filename := "data.json"
+	filename := "./frontend/data.json"
 
 	if websiteToDelete == "" {
 		return "Error: empty website"

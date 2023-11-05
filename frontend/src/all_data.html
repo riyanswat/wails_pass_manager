@@ -23,15 +23,30 @@
         <div class="buttons">
           <div class="btn" id="home">Back to home</div>
         </div>
+        <h3 id="json-data"></h3>
+        <!-- json data goes here -->
       </div>
     </div>
 
     <script>
       const homeBtn = document.getElementById("home");
+      const jsonData = document.getElementById("json-data");
+
       homeBtn.onclick = function () {
         window.location.href = "../index.html";
       };
+
+      // NEEDS FIXING... it can't read the data.json...
+      // but when the data.json is moved to frontend or frontend/src,
+      // it can read it ... :/
+      fetch("../data.json")
+        .then((response) => response.json())
+        .then((data) => {
+          jsonData.innerText = JSON.stringify(data, null, 2);
+        })
+        .catch((error) => (jsonData.innerText = `Error: ${error}`));
     </script>
+
     <!-- <script src="./main.js" type="module"></script>
     <script src="./utils.js" type="module"></script> -->
   </body>
