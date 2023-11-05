@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"strings"
 
 	// "fmt"
-	"io/ioutil"
 	"math/rand"
 	"os"
 	"regexp"
@@ -29,10 +29,12 @@ func NewApp() *App {
 	return &App{}
 }
 
-func addToJSON(filename, website, email, password string) string {
+func addToJSON(website, email, password string) string {
+	filename := "data.json"
+
 	// Convert input args to UserData struct
 	data := UserData{
-		Website:  website,
+		Website:  strings.ToLower(website),
 		Email:    email,
 		Password: password,
 	}
@@ -79,13 +81,15 @@ func addToJSON(filename, website, email, password string) string {
 	return "Successful"
 }
 
-func deleteFromJSON(filename, websiteToDelete string) string {
+func deleteFromJSON(websiteToDelete string) string {
+	filename := "data.json"
+
 	if websiteToDelete == "" {
 		return "Error: empty website"
 	}
 
 	// Read the existing JSON file
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return "Failed to read JSON file"
 	}
@@ -102,7 +106,7 @@ func deleteFromJSON(filename, websiteToDelete string) string {
 
 	// Identify and remove the elements matching the website
 	for _, user := range users {
-		if user.Website == websiteToDelete {
+		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
 			websiteFound = true
 		} else {
 			updatedUsers = append(updatedUsers, user)
@@ -120,7 +124,7 @@ func deleteFromJSON(filename, websiteToDelete string) string {
 	}
 
 	// Write the updated data back to the file
-	if err := ioutil.WriteFile(filename, updatedData, os.ModePerm); err != nil {
+	if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
 		return "Failed to update the file"
 	}
 
@@ -133,7 +137,7 @@ func deleteFromJSON(filename, websiteToDelete string) string {
 // 	}
 
 // 	// Read the existing JSON file
-// 	data, err := ioutil.ReadFile(filename)
+// 	data, err := os.ReadFile(filename)
 // 	if err != nil {
 // 		return "Failed to read JSON file"
 // 	}
@@ -168,7 +172,7 @@ func deleteFromJSON(filename, websiteToDelete string) string {
 // 	}
 
 // 	// Write the updated data back to the file
-// 	if err := ioutil.WriteFile(filename, updatedData, os.ModePerm); err != nil {
+// 	if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
 // 		return "Failed to update the file"
 // 	}
 
@@ -201,10 +205,10 @@ func (a *App) Generate(length int) string {
 	return generateRandomPassword(length)
 }
 
-func (a *App) Add(filename, website, email, password string) string {
-	return addToJSON(filename, website, email, password)
+func (a *App) Add(website, email, password string) string {
+	return addToJSON(website, email, password)
 }
 
-func (a *App) Delete(filename, websiteToDelete string) string {
-	return deleteFromJSON(filename, websiteToDelete)
+func (a *App) Delete(websiteToDelete string) string {
+	return deleteFromJSON(websiteToDelete)
 }

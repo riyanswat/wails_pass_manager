@@ -18,6 +18,7 @@ const addBtn = document.getElementById("add-btn");
 const searchBtn = document.getElementById("search-btn");
 const editBtn = document.getElementById("edit-btn");
 const deleteBtn = document.getElementById("delete-btn");
+const showAllBtn = document.getElementById("show-btn");
 const alertMessage = document.getElementById("alertMessage");
 
 // ===================================================
@@ -29,12 +30,7 @@ addBtn.onclick = function () {
   // }
 
   try {
-    Add(
-      "data.json",
-      websiteElement.value,
-      emailElement.value,
-      passElement.value
-    )
+    Add(websiteElement.value, emailElement.value, passElement.value)
       .then((res) => {
         if (res == "Successful") {
           // document.getElementById("result").innerText = `${res}`;
@@ -61,7 +57,7 @@ addBtn.onclick = function () {
 
 deleteBtn.onclick = function () {
   try {
-    Delete("data.json", websiteElement.value)
+    Delete(websiteElement.value)
       .then((res) => {
         showAlert(alertMessage, res);
         websiteElement.value = "";
@@ -117,4 +113,8 @@ window.generate = function () {
   } catch (err) {
     console.error(err);
   }
+};
+
+showAllBtn.onclick = function () {
+  window.location.href = "./src/all_data.html";
 };

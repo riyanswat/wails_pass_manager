@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>All data</title>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <div class="container">
+        <h1 class="main-heading">ALL DATA</h1>
+        <img
+          id="logo"
+          src="./assets/images/logo2.jpg"
+          class="logo"
+          draggable="false"
+        />
+      </div>
+      <br />
+
+        <div class="buttons">
+          <div class="btn" id="home">Back to home</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const homeBtn = document.getElementById("home")
+      homeBtn.onclick = function(){
+        window.location.href = "../index.html"
+      }
+    </script>
+    <!-- <script src="./main.js" type="module"></script>
+    <script src="./utils.js" type="module"></script> -->
+
+  </body>
+</html>
