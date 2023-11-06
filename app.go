@@ -5,11 +5,9 @@ import (
 	"encoding/json"
 	"strings"
 
-	// "fmt"
 	"math/rand"
 	"os"
 	"regexp"
-	"time"
 )
 
 // user json struct
@@ -143,7 +141,7 @@ func generateRandomPassword(length int) string {
 	chars := "!@#$%^&"
 	allChars := upper + lower + nums + chars
 
-	rand.Seed(time.Now().UnixNano())
+	// rand.Seed(time.Now().UnixNano())
 	password := make([]byte, length)
 	for c := range password {
 		password[c] = allChars[rand.Intn(len(allChars))]

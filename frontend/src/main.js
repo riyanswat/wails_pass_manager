@@ -82,7 +82,6 @@ deleteBtn.onclick = function () {
   }
 };
 
-// ...
 generateBtn.onclick = function () {
   generate();
   showAlert(alertMessage, "Password generated");
