@@ -136,54 +136,6 @@ func deleteFromJSON(websiteToDelete string) string {
 	return "Deleted"
 }
 
-// func deleteFromJSON(filename, websiteToDelete string) string {
-// 	if websiteToDelete == "" {
-// 		return "Error: empty website"
-// 	}
-
-// 	// Read the existing JSON file
-// 	data, err := os.ReadFile(filename)
-// 	if err != nil {
-// 		return "Failed to read JSON file"
-// 	}
-
-// 	// Unmarshal JSON data into a slice of UserData
-// 	var users []UserData
-// 	if err := json.Unmarshal(data, &users); err != nil {
-// 		return "Failed to unmarshal JSON data"
-// 	}
-
-// 	// Create a new slice to store updated data
-// 	var updatedUsers []UserData
-// 	websiteFound := false
-
-// 	// Identify and remove the elements matching the website
-// 	for _, user := range users {
-// 		if user.Website != websiteToDelete {
-// 			websiteFound = true
-// 		} else {
-// 			updatedUsers = append(updatedUsers, user)
-// 		}
-// 	}
-
-// 	if !websiteFound {
-// 		return "Website not found"
-// 	}
-
-// 	// Marshal the updated slice back to JSON
-// 	updatedData, err := json.Marshal(updatedUsers)
-// 	if err != nil {
-// 		return "Failed to marshal updated data"
-// 	}
-
-// 	// Write the updated data back to the file
-// 	if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
-// 		return "Failed to update the file"
-// 	}
-
-// 	return "Deleted"
-// }
-
 func generateRandomPassword(length int) string {
 	lower := "abcdefghijklmnopqrstuvwxyz"
 	upper := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

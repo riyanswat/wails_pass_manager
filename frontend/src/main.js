@@ -83,10 +83,10 @@ deleteBtn.onclick = function () {
 };
 
 // ...
-generateBtn.addEventListener("click", () => {
+generateBtn.onclick = function () {
   generate();
   showAlert(alertMessage, "Password generated");
-});
+};
 
 window.generate = function () {
   let length = 8;
