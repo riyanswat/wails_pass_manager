@@ -6,6 +6,42 @@
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="style.css" />
     <title>All data</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      td,
+      th,
+      table {
+        border: 1px solid #405e86;
+      }
+
+      table {
+        margin-bottom: 20px;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+
+      #head {
+        background-color: #111e2e;
+        color: white;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #253752;
+      }
+
+      tr:nth-child(even) {
+        background-color: #364966;
+      }
+    </style>
   </head>
   <body>
     <div id="app" class="container">
@@ -19,35 +55,53 @@
         />
       </div>
       <br />
-      <div class="inputs">
+      <div class="wrapper">
         <div class="buttons">
           <div class="btn" id="home">Back to home</div>
+          <br />
+          <br />
+
+          <table>
+            <thead>
+              <tr id="head">
+                <th>Website</th>
+                <th>Email</th>
+                <th>Password</th>
+              </tr>
+            </thead>
+            <tbody id="data-table-body"></tbody>
+          </table>
         </div>
-        <h3 id="json-data"></h3>
-        <!-- json data goes here -->
       </div>
     </div>
 
     <script>
       const homeBtn = document.getElementById("home");
-      const jsonData = document.getElementById("json-data");
+      const dataTableBody = document.getElementById("data-table-body");
 
       homeBtn.onclick = function () {
         window.location.href = "../index.html";
       };
 
-      // NEEDS FIXING... it can't read the data.json...
-      // but when the data.json is moved to frontend or frontend/src,
-      // it can read it ... :/
-      fetch("../data.json")
+      fetch("../data/data.json")
         .then((response) => response.json())
         .then((data) => {
-          jsonData.innerText = JSON.stringify(data, null, 2);
-        })
-        .catch((error) => (jsonData.innerText = `Error: ${error}`));
-    </script>
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            const websiteCell = document.createElement("td");
+            websiteCell.textContent = item.website;
+            const emailCell = document.createElement("td");
+            emailCell.textContent = item.email;
+            const passwordCell = document.createElement("td");
+            passwordCell.textContent = item.password;
 
-    <!-- <script src="./main.js" type="module"></script>
-    <script src="./utils.js" type="module"></script> -->
+            row.appendChild(websiteCell);
+            row.appendChild(emailCell);
+            row.appendChild(passwordCell);
+            dataTableBody.appendChild(row);
+          });
+        })
+        .catch((error) => console.error(`Error: ${error}`));
+    </script>
   </body>
 </html>

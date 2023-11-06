@@ -30,7 +30,12 @@ func NewApp() *App {
 }
 
 func addToJSON(website, email, password string) string {
-	filename := "./frontend/data.json"
+	filename := "./frontend/data/data.json"
+
+	// create data dir
+	if err := os.MkdirAll("./frontend/data", os.ModePerm); err != nil {
+		return "Error creating data dir: " + err.Error()
+	}
 
 	// Convert input args to UserData struct
 	data := UserData{
@@ -82,7 +87,7 @@ func addToJSON(website, email, password string) string {
 }
 
 func deleteFromJSON(websiteToDelete string) string {
-	filename := "./frontend/data.json"
+	filename := "./frontend/data/data.json"
 
 	if websiteToDelete == "" {
 		return "Error: empty website"

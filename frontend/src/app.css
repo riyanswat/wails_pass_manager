@@ -3,24 +3,23 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-}
-
-#logo {
+  }
+  
+  #logo {
     max-width: 120px;
     max-height: 120px;
     width: auto;
     height: 50%;
-    margin-right: 20px;
-    margin-top: 10px;
+    margin-top: 1px;
     border-radius: 50%;
     transition-duration: 0.7s;
-}
-
-#logo:hover {
+  }
+  
+  #logo:hover {
     transform: rotateZ(360deg);
-}
-
-.main-heading {
+  }
+  
+  .main-heading {
     display: inline-block;
     color: #64CCC5;
     font-family: "Times New Roman", serif;
@@ -28,11 +27,20 @@
     cursor: default;
     user-select: none;
     width: 100%;
-}
+  }
+
 
 .inputs {
     width: 300px;
 }
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
 .input-box {
     display: flex;
@@ -78,10 +86,11 @@
 }
 
 .buttons {
-    width: 100%;
-    display: grid;
-    place-items: center;
-}
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
 .btn {
     display: grid;
@@ -95,19 +104,16 @@
     cursor: pointer;
     transition-duration: 0.1s;
     user-select: none;
-    /* font-variant: small-caps; */
     border-radius: 15px;
 }
 
 .btn:hover {
     background-color: #394f6e;
-    /* transform: scale(1.01); */
 }
 
 .btn:active {
     background-color: #33465f;
     transform: translateY(1px);
-    /* transform: ; */
 }
 
 #alertMessage {
@@ -117,8 +123,8 @@
     padding: 5px 10px;
     border-radius: 4px;
     position: absolute;
-    top: 34%;
-    left: 50%; /* Center horizontally */
+    top: 31%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
 
