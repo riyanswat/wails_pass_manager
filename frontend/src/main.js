@@ -1,5 +1,5 @@
 import clipboardy from "clipboardy";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 import { showAlert } from "./utils";
 
 // backend apis:
@@ -116,4 +116,35 @@ window.generate = function () {
 
 showAllBtn.onclick = function () {
   window.location.href = "./src/all_data.html";
+};
+
+searchBtn.onclick = function () {
+  let websiteName = "";
+  let emailAdd = "";
+  let password = "";
+  // ====================================
+
+  if (websiteElement.value) {
+    fetch("../data/data.json")
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((item) => {
+          if (websiteElement.value.toLowerCase() == item.website) {
+            emailAdd = item.email;
+            password = item.password;
+          }
+        });
+
+        Swal.fire({
+          title: websiteElement.value
+            ? `Email and password for '${websiteElement.value}'`
+            : "Email and password for website",
+          text: `Email: ${emailAdd}\nPassword: ${password}`,
+          icon: "info",
+        });
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+
+    // ====================================
+  }
 };
