@@ -119,6 +119,10 @@ showAllBtn.onclick = function () {
 };
 
 searchBtn.onclick = function () {
+  if (!websiteElement.value) {
+    showAlert(alertMessage, "Please enter website name");
+    return;
+  }
   let websiteName = "";
   let emailAdd = "";
   let password = "";
@@ -139,7 +143,8 @@ searchBtn.onclick = function () {
           title: websiteElement.value
             ? `Email and password for '${websiteElement.value}'`
             : "Email and password for website",
-          text: `Email: ${emailAdd}\nPassword: ${password}`,
+          html: `<strong>Email:</strong> ${emailAdd}<br><strong>Password:</strong> ${password}`,
+          // text: `Email: ${emailAdd}\nPassword: ${password}`,
           icon: "info",
         });
       })
