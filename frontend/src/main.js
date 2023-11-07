@@ -1,6 +1,7 @@
 import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
-import { showAlert } from "./utils";
+// import { showAlert } from "./utils";
+import { showAlert, copyToClipboard } from "./utils";
 
 // backend apis:
 import { Generate, Add, Delete } from "../wailsjs/go/main/App";
@@ -137,18 +138,6 @@ searchBtn.onclick = function () {
             password = item.password;
           }
         });
-
-        // +++++++++++++++++++++++++++++++++++++++
-        function copyToClipboard(el, val) {
-          clipboardy.write(val, function (err) {
-            if (err) {
-              console.error(err);
-            } else {
-              console.log(`${el} copied to clipboard!`);
-            }
-          });
-        }
-        // +++++++++++++++++++++++++++++++++++++++
 
         Swal.fire({
           title: websiteElement.value
