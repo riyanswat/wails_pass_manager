@@ -143,7 +143,20 @@ searchBtn.onclick = function () {
           title: websiteElement.value
             ? `Email and password for '${websiteElement.value}'`
             : "Email and password for website",
-          html: `<strong>Email:</strong> ${emailAdd}<br><strong>Password:</strong> ${password}`,
+          html: `<strong>Email:</strong> ${emailAdd} <span onclick="copyEmail()" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+          <br><strong>Password:</strong> ${password} <span onclick="copyPass()" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`,
+
+          // function copyEmail(){
+
+          // clipboardy.write(result, function (err) {
+          //   if (err) {
+          //     console.error(err);
+          //   } else {
+          //     console.log("Password copied to clipboard!");
+          //   }
+          // });
+          // }
+
           // text: `Email: ${emailAdd}\nPassword: ${password}`,
           icon: "info",
         });
