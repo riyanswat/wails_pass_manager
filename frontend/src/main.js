@@ -126,7 +126,6 @@ searchBtn.onclick = function () {
   let websiteName = "";
   let emailAdd = "";
   let password = "";
-  // ====================================
 
   if (websiteElement.value) {
     fetch("../data/data.json")
@@ -139,27 +138,41 @@ searchBtn.onclick = function () {
           }
         });
 
+        // +++++++++++++++++++++++++++++++++++++++
+        function copyToClipboard(el, val) {
+          clipboardy.write(val, function (err) {
+            if (err) {
+              console.error(err);
+            } else {
+              console.log(`${el} copied to clipboard!`);
+            }
+          });
+        }
+        // +++++++++++++++++++++++++++++++++++++++
+
         Swal.fire({
           title: websiteElement.value
             ? `Email and password for '${websiteElement.value}'`
             : "Email and password for website",
-          html: `<strong>Email:</strong> ${emailAdd} <span onclick="copyEmail()" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
-          <br><strong>Password:</strong> ${password} <span onclick="copyPass()" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`,
-
-          // function copyEmail(){
-
-          // clipboardy.write(result, function (err) {
-          //   if (err) {
-          //     console.error(err);
-          //   } else {
-          //     console.log("Password copied to clipboard!");
-          //   }
-          // });
-          // }
+          html: `<strong>Email:</strong> ${emailAdd} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+          <br><strong>Password:</strong> ${password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`,
 
           // text: `Email: ${emailAdd}\nPassword: ${password}`,
           icon: "info",
-        });
+        }); // swal end
+
+        let copyEmail = document.getElementById("copy-email");
+        let copyPass = document.getElementById("copy-pass");
+
+        // ----------------------------------------
+        copyEmail.onclick = function () {
+          copyToClipboard("email", emailAdd);
+        };
+
+        copyPass.onclick = function () {
+          copyToClipboard("password", password);
+        };
+        // ----------------------------------------
       })
       .catch((error) => console.error(`Error: ${error}`));
 

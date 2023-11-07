@@ -5,13 +5,13 @@
 !include "FileFunc.nsh"
 
 !ifndef INFO_PROJECTNAME
-    !define INFO_PROJECTNAME "helloworld"
+    !define INFO_PROJECTNAME "Password manager"
 !endif
 !ifndef INFO_COMPANYNAME
-    !define INFO_COMPANYNAME "helloworld"
+    !define INFO_COMPANYNAME "Password manager"
 !endif
 !ifndef INFO_PRODUCTNAME
-    !define INFO_PRODUCTNAME "helloworld"
+    !define INFO_PRODUCTNAME "Password manager"
 !endif
 !ifndef INFO_PRODUCTVERSION
     !define INFO_PRODUCTVERSION "1.0.0"
