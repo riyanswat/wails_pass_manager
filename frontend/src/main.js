@@ -97,15 +97,7 @@ window.generate = function () {
       .then((result) => {
         // Update result with data back from App.Generate()
         passElement.value = result;
-
-        // Copy the result to the clipboard asynchronously
-        clipboardy.write(result, function (err) {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log("Password copied to clipboard!");
-          }
-        });
+        copyToClipboard("Password", result);
       })
       .catch((err) => {
         console.error(err);
@@ -124,7 +116,6 @@ searchBtn.onclick = function () {
     showAlert(alertMessage, "Please enter website name");
     return;
   }
-  let websiteName = "";
   let emailAdd = "";
   let password = "";
 
@@ -140,9 +131,7 @@ searchBtn.onclick = function () {
         });
 
         Swal.fire({
-          title: websiteElement.value
-            ? `Email and password for '${websiteElement.value}'`
-            : "Email and password for website",
+          title: `Email and password for '${websiteElement.value}'`,
           html: `<strong>Email:</strong> ${emailAdd} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
           <br><strong>Password:</strong> ${password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`,
 
@@ -164,7 +153,5 @@ searchBtn.onclick = function () {
         // ----------------------------------------
       })
       .catch((error) => console.error(`Error: ${error}`));
-
-    // ====================================
   }
 };
