@@ -66,23 +66,62 @@ deleteBtn.onclick = function () {
   // if yes, fire Swal
   // if delete is pressed, remove data from data.json
   // else cancel the Swal
-  Swal.fire({
-    title: `Do you want to delete '${websiteElement.value}'?`,
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Yes, delete it",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "Deleted!",
-        text: "Your file has been deleted.",
-        icon: "success",
+
+  // 000000000000000000000000000000000000000000000000000000000
+  fetch("../data/data.json")
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach((item) => {
+        if (websiteElement.value.toLowerCase() == item.website) {
+          // 777777777777777777777777777777777777777777777
+          Swal.fire({
+            title: `Do you want to delete '${websiteElement.value}'?`,
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: `${websiteElement} has been deleted`,
+                icon: "success",
+              });
+            }
+          });
+          // 777777777777777777777777777777777777777777777
+
+          emailAdd = item.email;
+          password = item.password;
+        }
       });
-    }
-  });
+
+      Swal.fire({
+        title: `Email and password for '${websiteElement.value}'`,
+        html: `<strong>Email:</strong> ${emailAdd} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+          <br><strong>Password:</strong> ${password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`,
+
+        // text: `Email: ${emailAdd}\nPassword: ${password}`,
+        icon: "info",
+      }); // swal end
+
+      let copyEmail = document.getElementById("copy-email");
+      let copyPass = document.getElementById("copy-pass");
+
+      // ----------------------------------------
+      copyEmail.onclick = function () {
+        copyToClipboard("email", emailAdd);
+      };
+
+      copyPass.onclick = function () {
+        copyToClipboard("password", password);
+      };
+      // ----------------------------------------
+    });
+  // 000000000000000000000000000000000000000000000000000000000
+
   // ================================================
 
   try {
