@@ -1,6 +1,5 @@
 import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
-// import { showAlert } from "./utils";
 import { showAlert, copyToClipboard } from "./utils";
 
 // backend apis:
@@ -57,23 +56,40 @@ addBtn.onclick = function () {
 // ...
 
 deleteBtn.onclick = function () {
+  if (!websiteElement.value) {
+    showAlert(alertMessage, "Please enter a website");
+    return;
+  }
+  // ================================================
+  // TODO
+  // check if website exists in data.json
+  // if yes, fire Swal
+  // if delete is pressed, remove data from data.json
+  // else cancel the Swal
+  Swal.fire({
+    title: `Do you want to delete '${websiteElement.value}'?`,
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success",
+      });
+    }
+  });
+  // ================================================
+
   try {
     Delete(websiteElement.value)
       .then((res) => {
         showAlert(alertMessage, res);
         websiteElement.value = "";
-        // if (res == "Successful") {
-        //   // document.getElementById("result").innerText = `${res}`;
-        //   showAlert(alertMessage, `${res}`);
-
-        //   websiteElement.value = "";
-        //   emailElement.value = "";
-        //   passElement.value = "";
-        // }
-        // if (res != "Successful") {
-        //   showAlert(alertMessage, `Error: ${res}`);
-        //   // document.getElementById("result").innerText = `Error: ${res}`;
-        // }
       })
       .catch((err) => {
         console.error(err);
@@ -113,7 +129,7 @@ showAllBtn.onclick = function () {
 
 searchBtn.onclick = function () {
   if (!websiteElement.value) {
-    showAlert(alertMessage, "Please enter website name");
+    showAlert(alertMessage, "Please enter a website");
     return;
   }
   let emailAdd = "";
