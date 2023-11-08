@@ -6,6 +6,7 @@ import clipboardy from "clipboardy";
 // const alertMessage = document.getElementById("alertMessage");
 
 export function showAlert(elem, text) {
+  // elem = document.getElementById("alertMessage");
   elem.style.display = "inline-block";
   elem.innerText = text;
 
@@ -25,6 +26,6 @@ export function copyToClipboard(el, val) {
 }
 
 // end
-if (typeof module !== "undefined") {
-  module.exports = showAlert;
-}
+// if (typeof module !== "undefined") {
+//   module.exports = showAlert;
+// }
