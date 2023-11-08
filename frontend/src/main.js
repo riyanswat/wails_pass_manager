@@ -34,7 +34,54 @@ class PasswordManager {
   }
 
   handleAdd() {
-    // Handle add button click event
+    //* ===========================================================
+    //! ===========================================================
+    // TODO:
+    //*      check if the website already exists in the json
+    //*      if it exists:
+    //*        tell the user it already exists and exit
+    // if (this.websiteElement.value) {
+    //   fetch("../data/data.json")
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       const formattedData = data
+    //         .map((item) => {
+    //           if (item.website == this.websiteElement.value.toLowerCase()) {
+    //             this.websiteElement.value = "";
+    //             itemEmail = item.email;
+    //             itemPass = item.password;
+
+    //             return `<strong>Email:</strong> ${item.email} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+    //             <br><strong>Password:</strong> ${item.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+
+    //             // `<strong>Email:</strong> ${item.email}<br><strong>Password:</strong> ${item.password}`;
+    //           }
+    //         })
+    //         .join("\n");
+    //       Swal.fire({
+    //         title: this.websiteElement.value,
+    //         html: formattedData,
+    //         icon: "info",
+    //       });
+
+    //       // ----------------------------------------
+    //       let copyEmail = document.getElementById("copy-email");
+    //       let copyPass = document.getElementById("copy-pass");
+
+    //       copyEmail.onclick = function () {
+    //         copyToClipboard("email", itemEmail);
+    //       };
+
+    //       copyPass.onclick = function () {
+    //         copyToClipboard("password", itemPass);
+    //       };
+    //     })
+    //     .catch((error) => console.error(`Error: ${error}`));
+    // }
+
+    //* ===========================================================
+    //! ===========================================================
+
     try {
       Add(
         this.websiteElement.value,
