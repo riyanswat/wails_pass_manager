@@ -219,37 +219,46 @@ class PasswordManager {
       fetch("../data/data.json")
         .then((response) => response.json())
         .then((data) => {
-          const formattedData = data
-            .map((item) => {
-              if (item.website == this.websiteElement.value.toLowerCase()) {
-                this.websiteElement.value = "";
-                itemEmail = item.email;
-                itemPass = item.password;
+          for (let entry of data) {
+            if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+              console.log(entry);
+              console.log(entry.email);
+              console.log(entry.password);
+            }
+          }
 
-                return `<strong>Email:</strong> ${item.email} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
-                <br><strong>Password:</strong> ${item.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+          // TODO: Uncomment and refactor:
+          // const formattedData = data
+          //   .map((item) => {
+          //     if (item.website == this.websiteElement.value.toLowerCase()) {
+          //       this.websiteElement.value = "";
+          //       itemEmail = item.email;
+          //       itemPass = item.password;
 
-                // `<strong>Email:</strong> ${item.email}<br><strong>Password:</strong> ${item.password}`;
-              }
-            })
-            .join("\n");
-          Swal.fire({
-            title: this.websiteElement.value,
-            html: formattedData,
-            icon: "info",
-          });
+          //       return `<strong>Email:</strong> ${item.email} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+          //       <br><strong>Password:</strong> ${item.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
 
-          // ----------------------------------------
-          let copyEmail = document.getElementById("copy-email");
-          let copyPass = document.getElementById("copy-pass");
+          //       // `<strong>Email:</strong> ${item.email}<br><strong>Password:</strong> ${item.password}`;
+          //     }
+          //   })
+          //   .join("\n");
+          // Swal.fire({
+          //   title: this.websiteElement.value,
+          //   html: formattedData,
+          //   icon: "info",
+          // });
 
-          copyEmail.onclick = function () {
-            copyToClipboard("email", itemEmail);
-          };
+          // // ----------------------------------------
+          // let copyEmail = document.getElementById("copy-email");
+          // let copyPass = document.getElementById("copy-pass");
 
-          copyPass.onclick = function () {
-            copyToClipboard("password", itemPass);
-          };
+          // copyEmail.onclick = function () {
+          //   copyToClipboard("email", itemEmail);
+          // };
+
+          // copyPass.onclick = function () {
+          //   copyToClipboard("password", itemPass);
+          // };
         })
         .catch((error) => console.error(`Error: ${error}`));
     }
