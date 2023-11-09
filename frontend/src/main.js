@@ -228,11 +228,24 @@ class PasswordManager {
               const formattedData = `<strong>Email:</strong> ${entry.email} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
                 <br><strong>Password:</strong> ${entry.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
 
-              Swal.fire({
-                title: this.websiteElement.value,
-                html: formattedData,
-                icon: "info",
-              });
+              //! ==================================================
+              //? ==================================================
+              function swalAlert(title, html, icon) {
+                Swal.fire({
+                  title: title,
+                  html: html,
+                  icon: icon,
+                });
+              }
+
+              swalAlert(this.websiteElement.value, formattedData, "info");
+              //? ==================================================
+              //! ==================================================
+              // Swal.fire({
+              //   title: this.websiteElement.value,
+              //   html: formattedData,
+              //   icon: "info",
+              // });
 
               let copyEmail = document.getElementById("copy-email");
               let copyPass = document.getElementById("copy-pass");
