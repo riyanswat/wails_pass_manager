@@ -221,11 +221,35 @@ class PasswordManager {
         .then((data) => {
           for (let entry of data) {
             if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-              console.log(entry);
-              console.log(entry.email);
-              console.log(entry.password);
-            }
-          }
+              this.websiteElement.value = "";
+              itemEmail = entry.email;
+              itemPass = entry.password;
+
+              const formattedData = `<strong>Email:</strong> ${entry.email} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+                <br><strong>Password:</strong> ${entry.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+
+              Swal.fire({
+                title: this.websiteElement.value,
+                html: formattedData,
+                icon: "info",
+              });
+
+              let copyEmail = document.getElementById("copy-email");
+              let copyPass = document.getElementById("copy-pass");
+
+              copyEmail.onclick = function () {
+                copyToClipboard("email", itemEmail);
+              };
+
+              copyPass.onclick = function () {
+                copyToClipboard("password", itemPass);
+              };
+
+              // console.log(entry);
+              // console.log(entry.email);
+              // console.log(entry.password);
+            } // if stat
+          } // for loop
 
           // TODO: Uncomment and refactor:
           // const formattedData = data
