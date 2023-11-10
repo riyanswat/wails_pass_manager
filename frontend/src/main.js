@@ -134,6 +134,9 @@ class PasswordManager {
   }
 
   handleDelete() {
+    //! THIS METHOD IS STILL BUGGY!
+    //? I first need to somehow call the Go delete method first
+    //? and check there whether the website already exists in the json
     if (!this.websiteElement.value) {
       showAlert(this.alertMessage, "Please enter a website");
       return;

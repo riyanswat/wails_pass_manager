@@ -27,6 +27,13 @@ func NewApp() *App {
 	return &App{}
 }
 
+// my functions
+
+func fileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil
+}
+
 func addToJSON(website, email, password string) string {
 	filename := "./frontend/data/data.json"
 
@@ -65,6 +72,7 @@ func addToJSON(website, email, password string) string {
 		}
 	}
 
+	// check if website already exists
 	for _, entry := range existingData {
 		if entry.Website == data.Website {
 			return "Website already exists"
@@ -113,7 +121,7 @@ func deleteFromJSON(websiteToDelete string) string {
 	var updatedUsers []UserData
 	websiteFound := false
 
-	// Identify and remove the elements matching the website
+	// check if the website == websiteToDelete
 	for _, user := range users {
 		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
 			websiteFound = true
@@ -137,7 +145,7 @@ func deleteFromJSON(websiteToDelete string) string {
 		return "Failed to update the file"
 	}
 
-	return "Deleted"
+	return "Deleted successfully"
 }
 
 func generateRandomPassword(length int) string {
@@ -161,7 +169,7 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Expose backend apis to frontened
+// Expose backend apis to frontend
 func (a *App) Generate(length int) string {
 	return generateRandomPassword(length)
 }
