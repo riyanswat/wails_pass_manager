@@ -41,29 +41,58 @@ class PasswordManager {
 
   handleAdd() {
     let websiteExists = false;
+
+    try {
+      Add(
+        this.websiteElement.value,
+        this.emailElement.value,
+        this.passElement.value
+      )
+        .then((res) => {
+          if (res === "Successful") {
+            showAlert(this.alertMessage, `${res}`);
+            this.clearFields();
+            return;
+          } else {
+            showAlert(this.alertMessage, `Error: ${res}`);
+            return;
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } catch (err) {
+      console.error(err);
+    }
+
     //* ===========================================================
     //! ===========================================================
     // TODO:
     //*      check if the website already exists in the json
     //*      if it exists:
     //*        tell the user it already exists and exit
-    if (this.websiteElement.value) {
-      fetch("../data/data.json")
-        .then((response) => response.json())
-        .then((data) => {
-          for (let entry of data) {
-            if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-              websiteExists = true;
-              this.clearFields();
-              break;
-            }
-          }
-          if (websiteExists) {
-            showAlert(this.alertMessage, "Website already exists!");
-            return;
-          }
-        });
-    }
+
+    //! Erroneous code for checking if web already exists:
+    // if (this.websiteElement.value) {
+    //   fetch("../data/data.json")
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       for (let entry of data) {
+    //         if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+    //           websiteExists = true;
+    //           // this.clearFields();
+    //           break;
+    //           showAlert(this.alertMessage, "Website already exists!");
+    //           return;
+    //         } else {
+    //         }
+    //       }
+    //       // if (websiteExists) {
+    //       //   return;
+    //       // }
+    //     });
+    // }
+    //! Erroneous code for checking if web already exists ^^
 
     //       const formattedData = data
     //         .map((item) => {
@@ -102,27 +131,6 @@ class PasswordManager {
 
     //* ===========================================================
     //! ===========================================================
-
-    try {
-      Add(
-        this.websiteElement.value,
-        this.emailElement.value,
-        this.passElement.value
-      )
-        .then((res) => {
-          if (res === "Successful") {
-            showAlert(this.alertMessage, `${res}`);
-            clearFields();
-          } else {
-            showAlert(this.alertMessage, `Error: ${res}`);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   handleDelete() {
@@ -155,7 +163,7 @@ class PasswordManager {
                     Delete(this.websiteElement.value)
                       .then((res) => {
                         showAlert(this.alertMessage, res);
-                        clearFields();
+                        this.clearFields();
                       })
                       .catch((err) => {
                         console.error(err);
@@ -215,7 +223,7 @@ class PasswordManager {
         .then((data) => {
           for (let entry of data) {
             if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-              clearFields();
+              this.clearFields();
               itemEmail = entry.email;
               itemPass = entry.password;
 

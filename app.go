@@ -65,6 +65,12 @@ func addToJSON(website, email, password string) string {
 		}
 	}
 
+	for _, entry := range existingData {
+		if entry.Website == data.Website {
+			return "Website already exists"
+		}
+	}
+
 	// Append new data
 	existingData = append(existingData, data)
 
