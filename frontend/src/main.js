@@ -33,17 +33,38 @@ class PasswordManager {
     this.searchBtn.addEventListener("click", this.handleSearch.bind(this));
   }
 
+  clearFields() {
+    this.websiteElement.value = "";
+    this.emailElement.value = "";
+    this.passElement.value = "";
+  }
+
   handleAdd() {
+    let websiteExists = false;
     //* ===========================================================
     //! ===========================================================
     // TODO:
     //*      check if the website already exists in the json
     //*      if it exists:
     //*        tell the user it already exists and exit
-    // if (this.websiteElement.value) {
-    //   fetch("../data/data.json")
-    //     .then((response) => response.json())
-    //     .then((data) => {
+    if (this.websiteElement.value) {
+      fetch("../data/data.json")
+        .then((response) => response.json())
+        .then((data) => {
+          for (let entry of data) {
+            if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+              websiteExists = true;
+              this.clearFields();
+              break;
+            }
+          }
+          if (websiteExists) {
+            showAlert(this.alertMessage, "Website already exists!");
+            return;
+          }
+        });
+    }
+
     //       const formattedData = data
     //         .map((item) => {
     //           if (item.website == this.websiteElement.value.toLowerCase()) {
@@ -91,9 +112,7 @@ class PasswordManager {
         .then((res) => {
           if (res === "Successful") {
             showAlert(this.alertMessage, `${res}`);
-            this.websiteElement.value = "";
-            this.emailElement.value = "";
-            this.passElement.value = "";
+            clearFields();
           } else {
             showAlert(this.alertMessage, `Error: ${res}`);
           }
@@ -114,9 +133,6 @@ class PasswordManager {
 
     let websiteFound = false;
 
-    //! ====================================================
-    //* ================ TODO: REFACTORING =================
-
     if (this.websiteElement.value) {
       fetch("../data/data.json")
         .then((response) => response.json())
@@ -124,7 +140,6 @@ class PasswordManager {
           for (let entry of data) {
             if (entry["website"] == this.websiteElement.value.toLowerCase()) {
               websiteFound = true;
-              //* ===========================================
               //? SWAL:
               Swal.fire({
                 title: "Are you sure?",
@@ -140,7 +155,7 @@ class PasswordManager {
                     Delete(this.websiteElement.value)
                       .then((res) => {
                         showAlert(this.alertMessage, res);
-                        this.websiteElement.value = "";
+                        clearFields();
                       })
                       .catch((err) => {
                         console.error(err);
@@ -155,24 +170,6 @@ class PasswordManager {
                     icon: "success",
                   });
                 }
-              });
-              //* ===========================================
-
-              //! ==================================================
-              // function swalAlert(title, html, icon) {
-              //   Swal.fire({
-              //     title: title,
-              //     html: html,
-              //     icon: icon,
-              //   });
-              // }
-
-              // swalAlert(this.websiteElement.value, formattedData, "info");
-              //! ==================================================
-              Swal.fire({
-                title: this.websiteElement.value,
-                html: formattedData,
-                icon: "info",
               });
               break;
             }
@@ -218,7 +215,7 @@ class PasswordManager {
         .then((data) => {
           for (let entry of data) {
             if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-              this.websiteElement.value = "";
+              clearFields();
               itemEmail = entry.email;
               itemPass = entry.password;
 
