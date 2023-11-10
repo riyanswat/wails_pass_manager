@@ -111,82 +111,79 @@ class PasswordManager {
       showAlert(this.alertMessage, "Please enter a website");
       return;
     }
-    // ================================================
-    // TODO
-    // check if website exists in data.json
-    // if yes, fire Swal
-    // if delete is pressed, remove data from data.json
-    // else cancel the Swal
 
-    // 000000000000000000000000000000000000000000000000000000000
-    fetch("../data/data.json")
-      .then((response) => response.json())
-      .then((data) => {
-        data.forEach((item) => {
-          if (this.websiteElement.value.toLowerCase() == item.website) {
-            this.websiteElement.value = "";
-            // 777777777777777777777777777777777777777777777
-            Swal.fire({
-              title: `Do you want to delete '${this.websiteElement.value}'?`,
-              text: "You won't be able to revert this!",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#d33",
-              cancelButtonColor: "#3085d6",
-              confirmButtonText: "Yes, delete it",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                Swal.fire({
-                  title: "Deleted!",
-                  text: `${this.websiteElement.value} has been deleted`,
-                  icon: "success",
-                });
-              }
-            });
-            // 777777777777777777777777777777777777777777777
+    let websiteFound = false;
 
-            const emailAdd = item.email;
-            const password = item.password;
+    //! ====================================================
+    //* ================ TODO: REFACTORING =================
+
+    if (this.websiteElement.value) {
+      fetch("../data/data.json")
+        .then((response) => response.json())
+        .then((data) => {
+          for (let entry of data) {
+            if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+              websiteFound = true;
+              //* ===========================================
+              //? SWAL:
+              Swal.fire({
+                title: "Are you sure?",
+                text: `Do you really want to delete ${this.websiteElement.value}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  try {
+                    Delete(this.websiteElement.value)
+                      .then((res) => {
+                        showAlert(this.alertMessage, res);
+                        this.websiteElement.value = "";
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                      });
+                  } catch (err) {
+                    console.error(err);
+                  }
+                  //* deletion confirmed
+                  Swal.fire({
+                    title: "Deleted!",
+                    text: `${this.websiteElement.value} has been deleted.`,
+                    icon: "success",
+                  });
+                }
+              });
+              //* ===========================================
+
+              //! ==================================================
+              // function swalAlert(title, html, icon) {
+              //   Swal.fire({
+              //     title: title,
+              //     html: html,
+              //     icon: icon,
+              //   });
+              // }
+
+              // swalAlert(this.websiteElement.value, formattedData, "info");
+              //! ==================================================
+              Swal.fire({
+                title: this.websiteElement.value,
+                html: formattedData,
+                icon: "info",
+              });
+              break;
+            }
+
+            if (!websiteFound) {
+              showAlert(this.alertMessage, "Website not found");
+              return;
+            }
           }
-        });
-
-        Swal.fire({
-          title: `Email and password for '${this.websiteElement.value}'`,
-          html: `<strong>Email:</strong> ${emailAdd} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
-              <br><strong>Password:</strong> ${password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`,
-
-          // text: `Email: ${emailAdd}\nPassword: ${password}`,
-          icon: "info",
-        }); // swal end
-
-        let copyEmail = document.getElementById("copy-email");
-        let copyPass = document.getElementById("copy-pass");
-
-        // ----------------------------------------
-        copyEmail.onclick = function () {
-          copyToClipboard("email", emailAdd);
-        };
-
-        copyPass.onclick = function () {
-          copyToClipboard("password", password);
-        };
-        // ----------------------------------------
-      });
-    // 000000000000000000000000000000000000000000000000000000000
-
-    // ================================================
-
-    try {
-      Delete(this.websiteElement.value)
-        .then((res) => {
-          showAlert(this.alertMessage, res);
-          this.websiteElement.value = "";
         })
-        .catch((err) => {
-          console.error(err);
-        });
-    } catch (err) {
-      console.error(err);
+        .catch((error) => console.error(`Error: ${error}`));
     }
   }
 
@@ -229,23 +226,21 @@ class PasswordManager {
                 <br><strong>Password:</strong> ${entry.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
 
               //! ==================================================
-              //? ==================================================
-              function swalAlert(title, html, icon) {
-                Swal.fire({
-                  title: title,
-                  html: html,
-                  icon: icon,
-                });
-              }
+              // function swalAlert(title, html, icon) {
+              //   Swal.fire({
+              //     title: title,
+              //     html: html,
+              //     icon: icon,
+              //   });
+              // }
 
-              swalAlert(this.websiteElement.value, formattedData, "info");
-              //? ==================================================
+              // swalAlert(this.websiteElement.value, formattedData, "info");
               //! ==================================================
-              // Swal.fire({
-              //   title: this.websiteElement.value,
-              //   html: formattedData,
-              //   icon: "info",
-              // });
+              Swal.fire({
+                title: this.websiteElement.value,
+                html: formattedData,
+                icon: "info",
+              });
 
               let copyEmail = document.getElementById("copy-email");
               let copyPass = document.getElementById("copy-pass");
