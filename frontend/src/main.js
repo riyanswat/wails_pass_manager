@@ -133,67 +133,129 @@ class PasswordManager {
     //! ===========================================================
   }
 
+  //! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  //* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   handleDelete() {
-    //! THIS METHOD IS STILL BUGGY!
-    //? I first need to somehow call the Go delete method first
-    //? and check there whether the website already exists in the json
     if (!this.websiteElement.value) {
       showAlert(this.alertMessage, "Please enter a website");
       return;
-    }
+    } else {
+      try {
+        Delete(this.websiteElement.value)
+          .then((res) => {
+            showAlert(this.alertMessage, res);
+            this.clearFields();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } catch (err) {
+        console.error(err);
+      }
 
-    let websiteFound = false;
+      //? Uncomment and refactor:
+      // let websiteFound = false;
 
-    if (this.websiteElement.value) {
-      fetch("../data/data.json")
-        .then((response) => response.json())
-        .then((data) => {
-          for (let entry of data) {
-            if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-              websiteFound = true;
-              //? SWAL:
-              Swal.fire({
-                title: "Are you sure?",
-                text: `Do you really want to delete ${this.websiteElement.value}?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  try {
-                    Delete(this.websiteElement.value)
-                      .then((res) => {
-                        showAlert(this.alertMessage, res);
-                        this.clearFields();
-                      })
-                      .catch((err) => {
-                        console.error(err);
-                      });
-                  } catch (err) {
-                    console.error(err);
-                  }
-                  //* deletion confirmed
-                  Swal.fire({
-                    title: "Deleted!",
-                    text: `${this.websiteElement.value} has been deleted.`,
-                    icon: "success",
-                  });
-                }
-              });
-              break;
-            }
+      // fetch("../data/data.json")
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     for (let entry of data) {
+      //       if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+      //         websiteFound = true;
+      //         //? SWAL:
+      //         Swal.fire({
+      //           title: "Are you sure?",
+      //           text: `Do you really want to delete ${this.websiteElement.value}?`,
+      //           icon: "warning",
+      //           showCancelButton: true,
+      //           confirmButtonColor: "#d33",
+      //           cancelButtonColor: "#3085d6",
+      //           confirmButtonText: "Yes, delete it!",
+      //         }).then((result) => {
+      //           if (result.isConfirmed) {
 
-            if (!websiteFound) {
-              showAlert(this.alertMessage, "Website not found");
-              return;
-            }
-          }
-        })
-        .catch((error) => console.error(`Error: ${error}`));
+      //             //* deletion confirmed
+      //             Swal.fire({
+      //               title: "Deleted!",
+      //               text: `${this.websiteElement.value} has been deleted.`,
+      //               icon: "success",
+      //             });
+      //           }
+      //         });
+      //         break;
+      //       }
+
+      //       if (!websiteFound) {
+      //         showAlert(this.alertMessage, "Website not found");
+      //         return;
+      //       }
+      //     }
+      //   })
+      //   .catch((error) => console.error(`Error: ${error}`));
     }
   }
+  //* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  //! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+  // handleDelete() {
+  //   //! THIS METHOD IS STILL BUGGY!
+  //   //? I first need to somehow call the Go delete method
+  //   //? and check there whether the website already exists in the json
+  //   if (!this.websiteElement.value) {
+  //     showAlert(this.alertMessage, "Please enter a website");
+  //     return;
+  //   } else {
+  //     let websiteFound = false;
+
+  //     fetch("../data/data.json")
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         for (let entry of data) {
+  //           if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+  //             websiteFound = true;
+  //             //? SWAL:
+  //             Swal.fire({
+  //               title: "Are you sure?",
+  //               text: `Do you really want to delete ${this.websiteElement.value}?`,
+  //               icon: "warning",
+  //               showCancelButton: true,
+  //               confirmButtonColor: "#d33",
+  //               cancelButtonColor: "#3085d6",
+  //               confirmButtonText: "Yes, delete it!",
+  //             }).then((result) => {
+  //               if (result.isConfirmed) {
+  //                 try {
+  //                   Delete(this.websiteElement.value)
+  //                     .then((res) => {
+  //                       showAlert(this.alertMessage, res);
+  //                       this.clearFields();
+  //                     })
+  //                     .catch((err) => {
+  //                       console.error(err);
+  //                     });
+  //                 } catch (err) {
+  //                   console.error(err);
+  //                 }
+  //                 //* deletion confirmed
+  //                 Swal.fire({
+  //                   title: "Deleted!",
+  //                   text: `${this.websiteElement.value} has been deleted.`,
+  //                   icon: "success",
+  //                 });
+  //               }
+  //             });
+  //             break;
+  //           }
+
+  //           if (!websiteFound) {
+  //             showAlert(this.alertMessage, "Website not found");
+  //             return;
+  //           }
+  //         }
+  //       })
+  //       .catch((error) => console.error(`Error: ${error}`));
+  //   }
+  // }
 
   handleGenerate() {
     Generate(this.passwordLength)

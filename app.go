@@ -29,10 +29,10 @@ func NewApp() *App {
 
 // my functions
 
-func fileExists(filename string) bool {
-	_, err := os.Stat(filename)
-	return err == nil
-}
+// func fileExists(filename string) bool {
+// 	_, err := os.Stat(filename)
+// 	return err == nil
+// }
 
 func addToJSON(website, email, password string) string {
 	filename := "./frontend/data/data.json"
@@ -49,9 +49,19 @@ func addToJSON(website, email, password string) string {
 		Password: password,
 	}
 
-	if password == "" || website == "" || email == "" {
+	spacesRegex := `^\s+$`
+	spacesReg := regexp.MustCompile(spacesRegex)
+
+	if password == "" ||
+		website == "" ||
+		email == "" ||
+		spacesReg.MatchString(website) ||
+		spacesReg.MatchString(email) ||
+		spacesReg.MatchString(password) {
 		return "Fill all fields"
 	}
+
+	// email validation
 	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 	re := regexp.MustCompile(emailRegex)
 
@@ -101,9 +111,9 @@ func addToJSON(website, email, password string) string {
 func deleteFromJSON(websiteToDelete string) string {
 	filename := "./frontend/data/data.json"
 
-	if websiteToDelete == "" {
-		return "Error: empty website"
-	}
+	// if websiteToDelete == "" {
+	// 	return "Error: empty website"
+	// }
 
 	// Read the existing JSON file
 	data, err := os.ReadFile(filename)
@@ -121,7 +131,7 @@ func deleteFromJSON(websiteToDelete string) string {
 	var updatedUsers []UserData
 	websiteFound := false
 
-	// check if the website == websiteToDelete
+	// Check if the website == websiteToDelete
 	for _, user := range users {
 		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
 			websiteFound = true
@@ -130,6 +140,7 @@ func deleteFromJSON(websiteToDelete string) string {
 		}
 	}
 
+	// If the website is not found, return an error
 	if !websiteFound {
 		return "Website not found"
 	}
@@ -147,6 +158,57 @@ func deleteFromJSON(websiteToDelete string) string {
 
 	return "Deleted successfully"
 }
+
+// func deleteFromJSON(websiteToDelete string) string {
+// 	filename := "./frontend/data/data.json"
+
+// 	if websiteToDelete == "" {
+// 		return "Error: empty website"
+// 	}
+
+// 	// Read the existing JSON file
+// 	data, err := os.ReadFile(filename)
+// 	if err != nil {
+// 		return "Failed to read JSON file"
+// 	}
+
+// 	// Unmarshal JSON data into a slice of UserData
+// 	var users []UserData
+// 	if err := json.Unmarshal(data, &users); err != nil {
+// 		return "Failed to unmarshal JSON data"
+// 	}
+
+// 	// Create a new slice to store updated data
+// 	var updatedUsers []UserData
+// 	websiteFound := false
+
+// 	// check if the website == websiteToDelete
+// 	for _, user := range users {
+// 		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
+// 			websiteFound = true
+// 			break
+// 		} else {
+// 			updatedUsers = append(updatedUsers, user)
+// 		}
+// 	}
+
+// 	if !websiteFound {
+// 		return "Website not found"
+// 	}
+
+// 	// Marshal the updated slice back to JSON
+// 	updatedData, err := json.Marshal(updatedUsers)
+// 	if err != nil {
+// 		return "Failed to marshal updated data"
+// 	}
+
+// 	// Write the updated data back to the file
+// 	if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
+// 		return "Failed to update the file"
+// 	}
+
+// 	return "Deleted successfully"
+// }
 
 func generateRandomPassword(length int) string {
 	lower := "abcdefghijklmnopqrstuvwxyz"
