@@ -2,7 +2,7 @@ import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
 import { showAlert, copyToClipboard } from "./utils";
 // backend apis:
-import { Generate, Add, Check, Delete } from "../wailsjs/go/main/App";
+import { Generate, Add, Delete } from "../wailsjs/go/main/App";
 
 class PasswordManager {
   constructor() {
@@ -133,116 +133,65 @@ class PasswordManager {
     //! ===========================================================
   }
 
-  //! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  //* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   handleDelete() {
+    //! THIS METHOD IS STILL BUGGY!
+    //? I first need to somehow call the Go delete method
+    //? and check there whether the website already exists in the json
     if (!this.websiteElement.value) {
       showAlert(this.alertMessage, "Please enter a website");
       return;
-    }
+    } else {
+      let websiteFound = false;
 
-    try {
-      Check(this.websiteElement.value).then((res) => {
-        if (res.toLowerCase() === "found") {
-          // SWAL:
-          Swal.fire({
-            title: "Are you sure?",
-            text: `Do you really want to delete ${this.websiteElement.value}?`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, delete it!",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Delete(this.websiteElement.value)
-                .then((res) => {
-                  showAlert(this.alertMessage, res);
-                  this.clearFields();
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-
-              // Deletion confirmed alert
+      fetch("../data/data.json")
+        .then((response) => response.json())
+        .then((data) => {
+          for (let entry of data) {
+            if (entry["website"] == this.websiteElement.value.toLowerCase()) {
+              websiteFound = true;
+              //? SWAL:
               Swal.fire({
-                title: "Deleted!",
-                text: `${this.websiteElement.value} has been deleted.`,
-                icon: "success",
+                title: "Are you sure?",
+                text: `Do you really want to delete ${this.websiteElement.value}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  try {
+                    Delete(this.websiteElement.value)
+                      .then((res) => {
+                        showAlert(this.alertMessage, res);
+                        this.clearFields();
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                      });
+                  } catch (err) {
+                    console.error(err);
+                  }
+                  //* deletion confirmed
+                  Swal.fire({
+                    title: "Deleted!",
+                    text: `${this.websiteElement.value} has been deleted.`,
+                    icon: "success",
+                  });
+                }
               });
+              break;
             }
-          });
-        } else {
-          showAlert(this.alertMessage, "Website not found");
-        }
-      });
-    } catch (err) {
-      console.error(err);
+
+            if (!websiteFound) {
+              showAlert(this.alertMessage, "Website not found");
+              return;
+            }
+          }
+        })
+        .catch((error) => console.error(`Error: ${error}`));
     }
   }
-
-  //* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  //! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-  // handleDelete() {
-  //   //! THIS METHOD IS STILL BUGGY!
-  //   //? I first need to somehow call the Go delete method
-  //   //? and check there whether the website already exists in the json
-  //   if (!this.websiteElement.value) {
-  //     showAlert(this.alertMessage, "Please enter a website");
-  //     return;
-  //   } else {
-  //     let websiteFound = false;
-
-  //     fetch("../data/data.json")
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         for (let entry of data) {
-  //           if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-  //             websiteFound = true;
-  //             //? SWAL:
-  //             Swal.fire({
-  //               title: "Are you sure?",
-  //               text: `Do you really want to delete ${this.websiteElement.value}?`,
-  //               icon: "warning",
-  //               showCancelButton: true,
-  //               confirmButtonColor: "#d33",
-  //               cancelButtonColor: "#3085d6",
-  //               confirmButtonText: "Yes, delete it!",
-  //             }).then((result) => {
-  //               if (result.isConfirmed) {
-  //                 try {
-  //                   Delete(this.websiteElement.value)
-  //                     .then((res) => {
-  //                       showAlert(this.alertMessage, res);
-  //                       this.clearFields();
-  //                     })
-  //                     .catch((err) => {
-  //                       console.error(err);
-  //                     });
-  //                 } catch (err) {
-  //                   console.error(err);
-  //                 }
-  //                 //* deletion confirmed
-  //                 Swal.fire({
-  //                   title: "Deleted!",
-  //                   text: `${this.websiteElement.value} has been deleted.`,
-  //                   icon: "success",
-  //                 });
-  //               }
-  //             });
-  //             break;
-  //           }
-
-  //           if (!websiteFound) {
-  //             showAlert(this.alertMessage, "Website not found");
-  //             return;
-  //           }
-  //         }
-  //       })
-  //       .catch((error) => console.error(`Error: ${error}`));
-  //   }
-  // }
 
   handleGenerate() {
     Generate(this.passwordLength)

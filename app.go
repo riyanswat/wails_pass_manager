@@ -3,11 +3,10 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"strings"
-
 	"math/rand"
 	"os"
 	"regexp"
+	"strings"
 )
 
 // user json struct
@@ -108,36 +107,6 @@ func addToJSON(website, email, password string) string {
 	return "Successful"
 }
 
-func confirmDeletion(websiteToDelete string) string {
-	filename := "./frontend/data/data.json"
-
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return "Failed to read JSON file"
-	}
-
-	var users []UserData
-	if err := json.Unmarshal(data, &users); err != nil {
-		return "Failed to unmarshal JSON data"
-	}
-
-	websiteFound := false
-
-	for _, user := range users {
-		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
-			websiteFound = true
-		} else {
-			websiteFound = false
-		}
-	}
-
-	if !websiteFound {
-		return "Website not found"
-	}
-
-	return "Found"
-}
-
 func deleteFromJSON(websiteToDelete string) string {
 	filename := "./frontend/data/data.json"
 
@@ -158,9 +127,11 @@ func deleteFromJSON(websiteToDelete string) string {
 
 	// Check if the website == websiteToDelete
 	for _, user := range users {
+
 		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
 			websiteFound = true
 		} else {
+			// Append to updatedUsers only if the website doesn't match
 			updatedUsers = append(updatedUsers, user)
 		}
 	}
@@ -187,11 +158,6 @@ func deleteFromJSON(websiteToDelete string) string {
 // func deleteFromJSON(websiteToDelete string) string {
 // 	filename := "./frontend/data/data.json"
 
-// 	if websiteToDelete == "" {
-// 		return "Error: empty website"
-// 	}
-
-// 	// Read the existing JSON file
 // 	data, err := os.ReadFile(filename)
 // 	if err != nil {
 // 		return "Failed to read JSON file"
@@ -207,16 +173,16 @@ func deleteFromJSON(websiteToDelete string) string {
 // 	var updatedUsers []UserData
 // 	websiteFound := false
 
-// 	// check if the website == websiteToDelete
+// 	// Check if the website == websiteToDelete
 // 	for _, user := range users {
 // 		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
 // 			websiteFound = true
-// 			break
 // 		} else {
 // 			updatedUsers = append(updatedUsers, user)
 // 		}
 // 	}
 
+// 	// If the website is not found, return an error
 // 	if !websiteFound {
 // 		return "Website not found"
 // 	}
@@ -263,10 +229,6 @@ func (a *App) Generate(length int) string {
 
 func (a *App) Add(website, email, password string) string {
 	return addToJSON(website, email, password)
-}
-
-func (a *App) Check(website string) string {
-	return confirmDeletion(website)
 }
 
 func (a *App) Delete(websiteToDelete string) string {
