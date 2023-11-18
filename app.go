@@ -27,13 +27,6 @@ func NewApp() *App {
 	return &App{}
 }
 
-// my functions
-
-// func fileExists(filename string) bool {
-// 	_, err := os.Stat(filename)
-// 	return err == nil
-// }
-
 func addToJSON(website, email, password string) string {
 	filename := "./frontend/data/data.json"
 
@@ -160,52 +153,6 @@ func deleteFromJSON(websiteToDelete string) string {
 
 	return "Deleted successfully"
 }
-
-// func deleteFromJSON(websiteToDelete string) string {
-// 	filename := "./frontend/data/data.json"
-
-// 	data, err := os.ReadFile(filename)
-// 	if err != nil {
-// 		return "Failed to read JSON file"
-// 	}
-
-// 	// Unmarshal JSON data into a slice of UserData
-// 	var users []UserData
-// 	if err := json.Unmarshal(data, &users); err != nil {
-// 		return "Failed to unmarshal JSON data"
-// 	}
-
-// 	// Create a new slice to store updated data
-// 	var updatedUsers []UserData
-// 	websiteFound := false
-
-// 	// Check if the website == websiteToDelete
-// 	for _, user := range users {
-// 		if strings.ToLower(user.Website) == strings.ToLower(websiteToDelete) {
-// 			websiteFound = true
-// 		} else {
-// 			updatedUsers = append(updatedUsers, user)
-// 		}
-// 	}
-
-// 	// If the website is not found, return an error
-// 	if !websiteFound {
-// 		return "Website not found"
-// 	}
-
-// 	// Marshal the updated slice back to JSON
-// 	updatedData, err := json.Marshal(updatedUsers)
-// 	if err != nil {
-// 		return "Failed to marshal updated data"
-// 	}
-
-// 	// Write the updated data back to the file
-// 	if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
-// 		return "Failed to update the file"
-// 	}
-
-// 	return "Deleted successfully"
-// }
 
 func generateRandomPassword(length int) string {
 	lower := "abcdefghijklmnopqrstuvwxyz"
