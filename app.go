@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"os"
 	"regexp"
@@ -148,7 +149,12 @@ func deleteFromJSON(websiteToDelete string) string {
 	}
 
 	// Write the updated data back to the file
+	// if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
+	// 	return "Failed to update the file"
+	// }
+
 	if err := os.WriteFile(filename, updatedData, os.ModePerm); err != nil {
+		fmt.Printf("Error updating the file: %v\n", err)
 		return "Failed to update the file"
 	}
 
