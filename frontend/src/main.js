@@ -65,16 +65,24 @@ class PasswordManager {
   }
 
   handleDelete() {
-    // get the exposed Go Search api here
-    Search(this.websiteElement.value).then((res) => {
-      if (res == "yes") {
+    const websiteToDelete = this.websiteElement.value;
+    Search(websiteToDelete).then((res) => {
+      // showAlert(alertMessage, res);
+      // console.log(
+      //   `Email for ${res[0].website} is ${res[0].email} and it's password is ${res[0].password}`
+      // );
+      //* ----------------------------------------------------------------
+      //* ----------------------------------------------------------------
+      //* ----------------------------------------------------------------
+
+      if (res[1] == "yes") {
         //! ===========================================================
         //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //* -----------------------------------------------------------
 
         Swal.fire({
           title: "Are you sure?",
-          text: `Do you really want to delete ${this.websiteElement.value}?`,
+          text: `Do you really want to delete '${websiteToDelete}'?`,
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#d33",
@@ -83,29 +91,28 @@ class PasswordManager {
         }).then((result) => {
           if (result.isConfirmed) {
             //? PERFORM DELETION HERE
+            // Delete(websiteToDelete);
             Swal.fire({
               title: "Deleted!",
-              text: `${this.websiteElement.value} has been deleted.`,
+              text: `'${websiteToDelete}' has been deleted.`,
               icon: "success",
             });
             this._clearFields();
           }
-          //   // Delete(this.websiteElement.value).then((res) => {
-          //     console.log(res);
-          //     showAlert(this.alertMessage, res);
-          //     // this._clearFields();
-          //   });
-
-          // }
         });
 
         //! ===========================================================
         //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //* -----------------------------------------------------------
-      } else if (res == "no") {
+      } else if (res[1] == "no") {
         showAlert(this.alertMessage, "Website doesn't exist");
       }
+
+      //* ----------------------------------------------------------------
+      //* ----------------------------------------------------------------
+      //* ----------------------------------------------------------------
     });
+
     // if (Search(this.websiteElement.value) == "yes") {
     //   showAlert(this.alertMessage, "website found (Search api)");
     // } else if()

@@ -1,4 +1,4 @@
-// (Almost) all the code has been copied from:
+// (Almost) all the code in this file has been copied from:
 // https://github.com/kkdai/youtube/blob/master/example_test.go
 package backend
 

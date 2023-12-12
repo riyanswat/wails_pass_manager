@@ -7,4 +7,4 @@ export function Delete(arg1:string):Promise<string>;
 
 export function Generate(arg1:number):Promise<string>;
 
-export function Search(arg1:string):Promise<string>;
+export function Search(arg1:string):Promise<Array<any>>;
