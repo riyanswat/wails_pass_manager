@@ -67,19 +67,8 @@ class PasswordManager {
   handleDelete() {
     const websiteToDelete = this.websiteElement.value;
     Search(websiteToDelete).then((res) => {
-      // showAlert(alertMessage, res);
-      // console.log(
-      //   `Email for ${res[0].website} is ${res[0].email} and it's password is ${res[0].password}`
-      // );
-      //* ----------------------------------------------------------------
-      //* ----------------------------------------------------------------
-      //* ----------------------------------------------------------------
-
       if (res[1] == "yes") {
-        //! ===========================================================
-        //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //* -----------------------------------------------------------
-
+        //* Confirm deletion
         Swal.fire({
           title: "Are you sure?",
           text: `Do you really want to delete '${websiteToDelete}'?`,
@@ -90,8 +79,10 @@ class PasswordManager {
           confirmButtonText: "Yes, delete it!",
         }).then((result) => {
           if (result.isConfirmed) {
-            //? PERFORM DELETION HERE
-            // Delete(websiteToDelete);
+            //* Deletion:
+            Delete(websiteToDelete).then((res) => showAlert(alertMessage, res));
+
+            //* Deletion successful
             Swal.fire({
               title: "Deleted!",
               text: `'${websiteToDelete}' has been deleted.`,
@@ -100,81 +91,10 @@ class PasswordManager {
             this._clearFields();
           }
         });
-
-        //! ===========================================================
-        //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //* -----------------------------------------------------------
       } else if (res[1] == "no") {
         showAlert(this.alertMessage, "Website doesn't exist");
       }
-
-      //* ----------------------------------------------------------------
-      //* ----------------------------------------------------------------
-      //* ----------------------------------------------------------------
     });
-
-    // if (Search(this.websiteElement.value) == "yes") {
-    //   showAlert(this.alertMessage, "website found (Search api)");
-    // } else if()
-
-    // if (!this.websiteElement.value) {
-    //   showAlert(this.alertMessage, "Please enter a website");
-    //   return;
-    // } else {
-    //   fetch("../../backend/embed/data.json")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       let websiteFound = false;
-
-    //       for (let i = 0; i < data.length; i++) {
-    //         if (data[i].website == this.websiteElement.value) {
-    //           console.log(
-    //             "FOUND",
-    //             `data[i].website: ${data[i].website} ~~ this.websiteElement.value: ${this.websiteElement.value}`
-    //           );
-
-    //           Swal.fire({
-    //             title: "Are you sure?",
-    //             text: `Do you really want to delete ${this.websiteElement.value}?`,
-    //             icon: "warning",
-    //             showCancelButton: true,
-    //             confirmButtonColor: "#d33",
-    //             cancelButtonColor: "#3085d6",
-    //             confirmButtonText: "Yes, delete it!",
-    //           }).then((result) => {
-    //             console.log(result);
-    //             if (result.isConfirmed) {
-    //               Delete(this.websiteElement.value).then((res) => {
-    //                 console.log(res);
-    //                 showAlert(this.alertMessage, res);
-    //                 // this._clearFields();
-    //               });
-
-    //               Swal.fire({
-    //                 title: "Deleted!",
-    //                 text: `${this.websiteElement.value} has been deleted.`,
-    //                 icon: "success",
-    //               });
-
-    //               this._clearFields();
-    //             }
-    //           });
-
-    //           websiteFound = true;
-    //           break; // break out of the loop if found
-    //         }
-    //       }
-
-    //       if (!websiteFound) {
-    //         console.log("NOT FOUND");
-    //         showAlert(
-    //           this.alertMessage,
-    //           `${this.websiteElement.value} not found`
-    //         );
-    //         return;
-    //       }
-    //     });
-    // }
   }
 
   handleGenerate() {
