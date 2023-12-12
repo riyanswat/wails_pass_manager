@@ -66,9 +66,46 @@ class PasswordManager {
 
   handleDelete() {
     // get the exposed Go Search api here
-    Search(this.websiteElement.value).then((res) =>
-      showAlert(this.alertMessage, res)
-    );
+    Search(this.websiteElement.value).then((res) => {
+      if (res == "yes") {
+        //! ===========================================================
+        //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //* -----------------------------------------------------------
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: `Do you really want to delete ${this.websiteElement.value}?`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            //? PERFORM DELETION HERE
+            Swal.fire({
+              title: "Deleted!",
+              text: `${this.websiteElement.value} has been deleted.`,
+              icon: "success",
+            });
+            this._clearFields();
+          }
+          //   // Delete(this.websiteElement.value).then((res) => {
+          //     console.log(res);
+          //     showAlert(this.alertMessage, res);
+          //     // this._clearFields();
+          //   });
+
+          // }
+        });
+
+        //! ===========================================================
+        //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //* -----------------------------------------------------------
+      } else if (res == "no") {
+        showAlert(this.alertMessage, "Website doesn't exist");
+      }
+    });
     // if (Search(this.websiteElement.value) == "yes") {
     //   showAlert(this.alertMessage, "website found (Search api)");
     // } else if()
