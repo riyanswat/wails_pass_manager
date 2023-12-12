@@ -1,17 +1,1 @@
-[
-  {
-    "website": "gmail",
-    "email": "abc@gmail.com",
-    "password": "fleCmERB"
-  },
-  {
-    "website": "outlook",
-    "email": "info@outlook.com",
-    "password": "sWnY$mMl"
-  },
-  {
-    "website": "xyz",
-    "email": "zyx@xyz.com",
-    "password": "LH^o8$km"
-  }
-]
+[{"website":"gmail","email":"abc@gmail.com","password":"fleCmERB"},{"website":"outlook","email":"info@outlook.com","password":"sWnY$mMl"}]

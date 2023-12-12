@@ -128,8 +128,43 @@ class PasswordManager {
         showAlert(this.alertMessage, "Website doesn't exist");
         return;
       } else {
-        console.log("res[0]", res[0]);
-        console.log("res[1]", res[1]);
+        itemEmail = res[0].email;
+        itemPass = res[0].password;
+        console.log(itemEmail, itemPass);
+
+        // *  +++++++++++++ RECTIFICATION ++++++++++++
+
+        const formattedData = `<strong>Email:</strong> ${itemEmail} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+                <br><strong>Password:</strong> ${itemPass} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+
+        Swal.fire({
+          title: websiteToSearch,
+          html: formattedData,
+          icon: "info",
+        });
+
+        let copyEmail = document.getElementById("copy-email");
+        let copyPass = document.getElementById("copy-pass");
+
+        copyEmail.onclick = function () {
+          copyToClipboard("email", itemEmail);
+          copyEmail.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 20px 0 20px; border-radius: 4px;">Copied!</span>`;
+          setTimeout(() => {
+            copyEmail.innerHTML = "&#x1F4CB;";
+          }, 1000);
+        };
+
+        copyPass.onclick = function () {
+          copyToClipboard("password", itemPass);
+          copyPass.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 20px 0 20px; border-radius: 4px;">Copied!</span>`;
+          setTimeout(() => {
+            copyPass.innerHTML = "&#x1F4CB;";
+          }, 1000);
+        };
+
+        // *  +++++++++++++ RECTIFICATION ++++++++++++
+
+        this._clearFields();
       }
     });
 
