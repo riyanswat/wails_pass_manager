@@ -2,7 +2,7 @@ import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
 import { showAlert, copyToClipboard } from "./utils";
 // backend apis:
-import { Generate, Add, Delete } from "../wailsjs/go/main/App";
+import { Generate, Add, Delete, Search } from "../wailsjs/go/backend/App";
 
 class PasswordManager {
   constructor() {
@@ -65,64 +65,72 @@ class PasswordManager {
   }
 
   handleDelete() {
-    if (!this.websiteElement.value) {
-      showAlert(this.alertMessage, "Please enter a website");
-      return;
-    } else {
-      fetch("../data/data.json")
-        .then((response) => response.json())
-        .then((data) => {
-          let websiteFound = false;
+    // get the exposed Go Search api here
+    Search(this.websiteElement.value).then((res) =>
+      showAlert(this.alertMessage, res)
+    );
+    // if (Search(this.websiteElement.value) == "yes") {
+    //   showAlert(this.alertMessage, "website found (Search api)");
+    // } else if()
 
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].website == this.websiteElement.value) {
-              console.log(
-                "FOUND",
-                `data[i].website: ${data[i].website} ~~ this.websiteElement.value: ${this.websiteElement.value}`
-              );
+    // if (!this.websiteElement.value) {
+    //   showAlert(this.alertMessage, "Please enter a website");
+    //   return;
+    // } else {
+    //   fetch("../../backend/embed/data.json")
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       let websiteFound = false;
 
-              Swal.fire({
-                title: "Are you sure?",
-                text: `Do you really want to delete ${this.websiteElement.value}?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!",
-              }).then((result) => {
-                console.log(result);
-                if (result.isConfirmed) {
-                  Delete(this.websiteElement.value).then((res) => {
-                    console.log(res);
-                    showAlert(this.alertMessage, res);
-                    // this._clearFields();
-                  });
+    //       for (let i = 0; i < data.length; i++) {
+    //         if (data[i].website == this.websiteElement.value) {
+    //           console.log(
+    //             "FOUND",
+    //             `data[i].website: ${data[i].website} ~~ this.websiteElement.value: ${this.websiteElement.value}`
+    //           );
 
-                  Swal.fire({
-                    title: "Deleted!",
-                    text: `${this.websiteElement.value} has been deleted.`,
-                    icon: "success",
-                  });
+    //           Swal.fire({
+    //             title: "Are you sure?",
+    //             text: `Do you really want to delete ${this.websiteElement.value}?`,
+    //             icon: "warning",
+    //             showCancelButton: true,
+    //             confirmButtonColor: "#d33",
+    //             cancelButtonColor: "#3085d6",
+    //             confirmButtonText: "Yes, delete it!",
+    //           }).then((result) => {
+    //             console.log(result);
+    //             if (result.isConfirmed) {
+    //               Delete(this.websiteElement.value).then((res) => {
+    //                 console.log(res);
+    //                 showAlert(this.alertMessage, res);
+    //                 // this._clearFields();
+    //               });
 
-                  this._clearFields();
-                }
-              });
+    //               Swal.fire({
+    //                 title: "Deleted!",
+    //                 text: `${this.websiteElement.value} has been deleted.`,
+    //                 icon: "success",
+    //               });
 
-              websiteFound = true;
-              break; // break out of the loop if found
-            }
-          }
+    //               this._clearFields();
+    //             }
+    //           });
 
-          if (!websiteFound) {
-            console.log("NOT FOUND");
-            showAlert(
-              this.alertMessage,
-              `${this.websiteElement.value} not found`
-            );
-            return;
-          }
-        });
-    }
+    //           websiteFound = true;
+    //           break; // break out of the loop if found
+    //         }
+    //       }
+
+    //       if (!websiteFound) {
+    //         console.log("NOT FOUND");
+    //         showAlert(
+    //           this.alertMessage,
+    //           `${this.websiteElement.value} not found`
+    //         );
+    //         return;
+    //       }
+    //     });
+    // }
   }
 
   handleGenerate() {
@@ -139,7 +147,7 @@ class PasswordManager {
   }
 
   handleShowAll() {
-    window.location.href = "./src/all_data.html";
+    window.location.href = "../all_data.html";
   }
 
   handleSearch() {
@@ -151,7 +159,7 @@ class PasswordManager {
     let itemPass = "";
 
     if (this.websiteElement.value) {
-      fetch("../data/data.json")
+      fetch("../../backend/embed/data.json")
         .then((response) => response.json())
         .then((data) => {
           for (let entry of data) {
