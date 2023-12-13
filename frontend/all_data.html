@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/app.css" />
     <link rel="stylesheet" href="src/style.css" />
+
     <title>All data</title>
     <style>
       table {
@@ -52,12 +53,12 @@
         />
       </div>
       <br />
+      <div id="temp">temp</div>
       <div class="wrapper">
         <div class="buttons">
           <div class="btn" id="home">Back to home</div>
           <br />
           <br />
-
           <table>
             <thead>
               <tr id="head">
@@ -80,25 +81,26 @@
         window.location.href = "index.html";
       };
 
-      fetch("../backend/embed/data.json")
-        .then((response) => response.json())
-        .then((data) => {
-          data.forEach((item) => {
-            const row = document.createElement("tr");
-            const websiteCell = document.createElement("td");
-            websiteCell.textContent = item.website;
-            const emailCell = document.createElement("td");
-            emailCell.textContent = item.email;
-            const passwordCell = document.createElement("td");
-            passwordCell.textContent = item.password;
+      // fetch("../backend/embed/data.json")
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     data.forEach((item) => {
+      //       const row = document.createElement("tr");
+      //       const websiteCell = document.createElement("td");
+      //       websiteCell.textContent = item.website;
+      //       const emailCell = document.createElement("td");
+      //       emailCell.textContent = item.email;
+      //       const passwordCell = document.createElement("td");
+      //       passwordCell.textContent = item.password;
 
-            row.appendChild(websiteCell);
-            row.appendChild(emailCell);
-            row.appendChild(passwordCell);
-            dataTableBody.appendChild(row);
-          });
-        })
-        .catch((error) => console.error(`Error: ${error}`));
+      //       row.appendChild(websiteCell);
+      //       row.appendChild(emailCell);
+      //       row.appendChild(passwordCell);
+      //       dataTableBody.appendChild(row);
+      //     });
+      //   })
+      //   .catch((error) => console.error(`Error: ${error}`));
     </script>
+    <!-- <script src="./src/main.js" type="module"></script> -->
   </body>
 </html>

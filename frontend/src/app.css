@@ -116,6 +116,18 @@
     transform: translateY(1px);
 }
 
+#delete-btn {
+  background-color: rgb(218, 45, 45);
+}
+
+#delete-btn:hover {
+  background-color: rgb(216, 41, 41);
+}
+
+#delete-btn:active {
+  background-color: rgb(204, 35, 35);
+}
+
 #alertMessage {
     display: none;
     background-color: #3460db;
@@ -129,3 +141,6 @@
 }
 
 
+#all-data {
+  display: none;
+}

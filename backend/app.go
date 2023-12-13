@@ -43,10 +43,10 @@ func (a *App) Delete(websiteToDelete string) string {
 	return DeleteFromJSON(websiteToDelete)
 }
 
-// func (a *App) Search(webToSearch string) (UserData, string) {
-// 	return SearchWebsite(webToSearch)
-// }
-
 func (a *App) Search(webToSearch string) ([]interface{}, error) {
 	return SearchWebsite(webToSearch)
+}
+
+func (a *App) AllData() []UserData {
+	return ShowAll()
 }

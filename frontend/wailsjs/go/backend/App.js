@@ -6,6 +6,10 @@ export function Add(arg1, arg2, arg3) {
   return window['go']['backend']['App']['Add'](arg1, arg2, arg3);
 }
 
+export function AllData() {
+  return window['go']['backend']['App']['AllData']();
+}
+
 export function Delete(arg1) {
   return window['go']['backend']['App']['Delete'](arg1);
 }

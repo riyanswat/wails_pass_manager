@@ -2,11 +2,17 @@ import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
 import { showAlert, copyToClipboard } from "./utils";
 // backend apis:
-import { Generate, Add, Delete, Search } from "../wailsjs/go/backend/App";
+import {
+  Generate,
+  Add,
+  Delete,
+  Search,
+  AllData,
+} from "../wailsjs/go/backend/App";
 
 class PasswordManager {
   constructor() {
-    // intput and output elements
+    // input and output elements
     this.passElement = document.getElementById("password");
     this.websiteElement = document.getElementById("website");
     this.emailElement = document.getElementById("email");
@@ -18,14 +24,19 @@ class PasswordManager {
     this.editBtn = document.getElementById("edit-btn");
     this.deleteBtn = document.getElementById("delete-btn");
     this.showAllBtn = document.getElementById("show-btn");
-
     // values
     this.passwordLength = 8;
 
-    this.initEventHandlers();
+    // other elements
+    this.dataTableBody = document.getElementById("data-table-body");
+    this.allDataElem = document.getElementById("all-data");
+    this.appElem = document.getElementById("app");
+    this.homeKey = document.getElementById("home");
+
+    this._initEventHandlers();
   }
 
-  initEventHandlers() {
+  _initEventHandlers() {
     this.addBtn.addEventListener("click", this.handleAdd.bind(this));
     this.deleteBtn.addEventListener("click", this.handleDelete.bind(this));
     this.generateBtn.addEventListener("click", this.handleGenerate.bind(this));
@@ -115,7 +126,37 @@ class PasswordManager {
   }
 
   handleShowAll() {
-    window.location.href = "../all_data.html";
+    this.dataTableBody.innerHTML = "";
+
+    this.allDataElem.style.display = "block";
+    this.appElem.style.display = "none";
+    this.homeKey.onclick = () => {
+      this.allDataElem.style.display = "none";
+      this.appElem.style.display = "flex";
+    };
+
+    AllData().then((data) => {
+      // showAlert(this.alertMessage, data);
+      for (let entry of data) {
+        console.log(entry.website);
+        console.log(entry.email);
+        console.log(entry.password);
+
+        const row = document.createElement("tr");
+        const websiteCell = document.createElement("td");
+        websiteCell.textContent = entry.website;
+        const emailCell = document.createElement("td");
+        emailCell.textContent = entry.email;
+        const passwordCell = document.createElement("td");
+        passwordCell.textContent = entry.password;
+
+        row.appendChild(websiteCell);
+        row.appendChild(emailCell);
+        row.appendChild(passwordCell);
+        this.dataTableBody.appendChild(row);
+      }
+    });
+    // window.location.href = "../all_data.html";
   }
 
   handleSearch() {
