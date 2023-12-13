@@ -66,6 +66,10 @@ class PasswordManager {
 
   handleDelete() {
     const websiteToDelete = this.websiteElement.value;
+    if (!websiteToDelete) {
+      showAlert(this.alertMessage, "Please enter a website");
+      return;
+    }
     Search(websiteToDelete).then((res) => {
       if (res[1] == "yes") {
         //* Confirm deletion
@@ -130,12 +134,9 @@ class PasswordManager {
       } else {
         itemEmail = res[0].email;
         itemPass = res[0].password;
-        console.log(itemEmail, itemPass);
 
-        // *  +++++++++++++ RECTIFICATION ++++++++++++
-
-        const formattedData = `<strong>Email:</strong> ${itemEmail} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
-                <br><strong>Password:</strong> ${itemPass} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+        const formattedData = `<strong style="user-select: none;">Email:</strong> ${itemEmail} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+                <br><strong style="user-select: none;">Password:</strong> ${itemPass} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
 
         Swal.fire({
           title: websiteToSearch,
@@ -148,10 +149,10 @@ class PasswordManager {
 
         copyEmail.onclick = function () {
           copyToClipboard("email", itemEmail);
-          copyEmail.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 20px 0 20px; border-radius: 4px;">Copied!</span>`;
+          copyEmail.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 10px 0 10px; border-radius: 4px;">Copied!</span>`;
           setTimeout(() => {
             copyEmail.innerHTML = "&#x1F4CB;";
-          }, 1000);
+          }, 500);
         };
 
         copyPass.onclick = function () {
@@ -159,91 +160,12 @@ class PasswordManager {
           copyPass.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 20px 0 20px; border-radius: 4px;">Copied!</span>`;
           setTimeout(() => {
             copyPass.innerHTML = "&#x1F4CB;";
-          }, 1000);
+          }, 500);
         };
-
-        // *  +++++++++++++ RECTIFICATION ++++++++++++
 
         this._clearFields();
       }
     });
-
-    //* -------------------------------------------------------------------
-    //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //! ======================== NEW CODE =================================
-
-    // Search(websiteToDelete).then((res) => {
-    //   if (res[1] == "yes") {
-    //     //* Confirm deletion
-    //     Swal.fire({
-    //       title: "Are you sure?",
-    //       text: `Do you really want to delete '${websiteToDelete}'?`,
-    //       icon: "warning",
-    //       showCancelButton: true,
-    //       confirmButtonColor: "#d33",
-    //       cancelButtonColor: "#3085d6",
-    //       confirmButtonText: "Yes, delete it!",
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         //* Deletion:
-    //         Delete(websiteToDelete).then((res) => showAlert(alertMessage, res));
-
-    //         //* Deletion successful
-    //         Swal.fire({
-    //           title: "Deleted!",
-    //           text: `'${websiteToDelete}' has been deleted.`,
-    //           icon: "success",
-    //         });
-    //         this._clearFields();
-    //       }
-    //     });
-    //   } else if (res[1] == "no") {
-    //     showAlert(this.alertMessage, "Website doesn't exist");
-    //   }
-    // });
-
-    //* -------------------------------------------------------------------
-    //? +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //! ===================================================================
-
-    //! ---------------------------------------------------------
-    //* --------------------- OLD CODE --------------------------
-    // if (this.websiteElement.value) {
-    //   fetch("../../backend/embed/data.json")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       for (let entry of data) {
-    //         if (entry["website"] == this.websiteElement.value.toLowerCase()) {
-    //           this._clearFields();
-    //           itemEmail = entry.email;
-    //           itemPass = entry.password;
-
-    //           const formattedData = `<strong>Email:</strong> ${entry.email} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
-    //             <br><strong>Password:</strong> ${entry.password} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
-
-    //           Swal.fire({
-    //             title: this.websiteElement.value,
-    //             html: formattedData,
-    //             icon: "info",
-    //           });
-
-    //           let copyEmail = document.getElementById("copy-email");
-    //           let copyPass = document.getElementById("copy-pass");
-
-    //           copyEmail.onclick = function () {
-    //             copyToClipboard("email", itemEmail);
-    //           };
-
-    //           copyPass.onclick = function () {
-    //             copyToClipboard("password", itemPass);
-    //           };
-    //         } // if stat
-    //       } // for loop
-    //     })
-    //     .catch((error) => console.error(`Error: ${error}`));
-    // }
-    //! ---------------------------------------------------------
-    //* --------------------- OLD CODE --------------------------
   }
 }
 
