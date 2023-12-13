@@ -125,15 +125,25 @@ class PasswordManager {
     showAlert(alertMessage, "Password generated");
   }
 
-  handleShowAll() {
-    this.dataTableBody.innerHTML = "";
-
+  _toggleDisplay() {
     this.allDataElem.style.display = "block";
     this.appElem.style.display = "none";
     this.homeKey.onclick = () => {
       this.allDataElem.style.display = "none";
       this.appElem.style.display = "flex";
     };
+  }
+
+  handleShowAll() {
+    this.dataTableBody.innerHTML = "";
+
+    this._toggleDisplay();
+    // this.allDataElem.style.display = "block";
+    // this.appElem.style.display = "none";
+    // this.homeKey.onclick = () => {
+    //   this.allDataElem.style.display = "none";
+    //   this.appElem.style.display = "flex";
+    // };
 
     AllData().then((data) => {
       // showAlert(this.alertMessage, data);
@@ -156,7 +166,6 @@ class PasswordManager {
         this.dataTableBody.appendChild(row);
       }
     });
-    // window.location.href = "../all_data.html";
   }
 
   handleSearch() {
