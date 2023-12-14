@@ -31,7 +31,7 @@ func AddToJSON(website, email, password string) string {
 		spacesReg.MatchString(website) ||
 		spacesReg.MatchString(email) ||
 		spacesReg.MatchString(password) {
-		return "Fill all fields"
+		return "Fill all the fields"
 	}
 
 	// email validation

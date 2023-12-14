@@ -36,6 +36,8 @@ class PasswordManager {
     this._initEventHandlers();
   }
 
+  // Private methods:
+
   _initEventHandlers() {
     this.addBtn.addEventListener("click", this.handleAdd.bind(this));
     this.deleteBtn.addEventListener("click", this.handleDelete.bind(this));
@@ -50,6 +52,17 @@ class PasswordManager {
     this.passElement.value = "";
   }
 
+  _toggleDisplay() {
+    this.allDataElem.style.display = "block";
+    this.appElem.style.display = "none";
+    this.homeKey.onclick = () => {
+      this.allDataElem.style.display = "none";
+      this.appElem.style.display = "flex";
+    };
+  }
+
+  // Other methods
+
   handleAdd() {
     try {
       Add(
@@ -63,7 +76,7 @@ class PasswordManager {
             this._clearFields();
             return;
           } else {
-            showAlert(this.alertMessage, `Error: ${res}`);
+            showAlert(this.alertMessage, `${res}`);
             return;
           }
         })
@@ -125,19 +138,12 @@ class PasswordManager {
     showAlert(alertMessage, "Password generated");
   }
 
-  _toggleDisplay() {
-    this.allDataElem.style.display = "block";
-    this.appElem.style.display = "none";
-    this.homeKey.onclick = () => {
-      this.allDataElem.style.display = "none";
-      this.appElem.style.display = "flex";
-    };
-  }
-
   handleShowAll() {
     this.dataTableBody.innerHTML = "";
 
     this._toggleDisplay();
+    this._clearFields();
+
     // this.allDataElem.style.display = "block";
     // this.appElem.style.display = "none";
     // this.homeKey.onclick = () => {

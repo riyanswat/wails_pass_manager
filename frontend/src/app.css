@@ -100,7 +100,8 @@
     height: 35px;
     width: 100%;
     margin: 3px;
-    background-color: #40587a;
+    background-color: #4C4E5F;
+    /* background-color: #40587a; */
     cursor: pointer;
     transition-duration: 0.1s;
     user-select: none;
@@ -108,11 +109,13 @@
 }
 
 .btn:hover {
-    background-color: #394f6e;
+    /* background-color: #394f6e; */
+    background-color: #414358;
 }
 
 .btn:active {
-    background-color: #33465f;
+    /* background-color: #33465f; */
+    background-color: #373a4d;
     transform: translateY(1px);
 }
 
@@ -121,11 +124,11 @@
 }
 
 #delete-btn:hover {
-  background-color: rgb(216, 41, 41);
+  background-color: rgb(207, 35, 35);
 }
 
 #delete-btn:active {
-  background-color: rgb(204, 35, 35);
+  background-color: rgb(194, 30, 30);
 }
 
 #alertMessage {
