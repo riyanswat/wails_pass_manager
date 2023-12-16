@@ -8,6 +8,7 @@ import {
   Delete,
   Search,
   AllData,
+  Edit,
 } from "../wailsjs/go/backend/App";
 
 class PasswordManager {
@@ -44,6 +45,7 @@ class PasswordManager {
     this.generateBtn.addEventListener("click", this.handleGenerate.bind(this));
     this.showAllBtn.addEventListener("click", this.handleShowAll.bind(this));
     this.searchBtn.addEventListener("click", this.handleSearch.bind(this));
+    this.editBtn.addEventListener("click", this.handleEdit.bind(this));
   }
 
   _clearFields() {
@@ -61,7 +63,7 @@ class PasswordManager {
     };
   }
 
-  // Other methods
+  // Public methods
 
   handleAdd() {
     try {
@@ -222,6 +224,18 @@ class PasswordManager {
         this._clearFields();
       }
     });
+  }
+
+  handleEdit() {
+    const websiteToEdit = this.websiteElement.value;
+    const newEmail = this.emailElement.value;
+    if (!websiteToEdit || !newEmail) {
+      showAlert(this.alertMessage, "Please enter a website and new email");
+      return;
+    }
+    Edit(websiteToEdit, newEmail).then((res) =>
+      showAlert(this.alertMessage, res)
+    );
   }
 }
 

@@ -50,3 +50,7 @@ func (a *App) Search(webToSearch string) ([]interface{}, error) {
 func (a *App) AllData() []UserData {
 	return ShowAll()
 }
+
+func (a *App) Edit(websiteToEdit, newEmail string) string {
+	return EditJSON(websiteToEdit, newEmail)
+}

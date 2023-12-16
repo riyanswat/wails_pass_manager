@@ -14,6 +14,10 @@ export function Delete(arg1) {
   return window['go']['backend']['App']['Delete'](arg1);
 }
 
+export function Edit(arg1, arg2) {
+  return window['go']['backend']['App']['Edit'](arg1, arg2);
+}
+
 export function Generate(arg1) {
   return window['go']['backend']['App']['Generate'](arg1);
 }
