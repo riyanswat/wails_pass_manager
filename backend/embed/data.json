@@ -1,1 +1,22 @@
-[{"website":"google","email":"riyan@google.com","password":"zGpr\u0026\u0026AR"},{"website":"outlook","email":"abc@outlook.com","password":"Yb7BszpN"},{"website":"yahoo","email":"abc@yahoo.com","password":"ivlYaj$e"},{"website":"gmail","email":"abc@gmail.com","password":"uYb#D4QB"}]
+[
+  {
+    "website": "google",
+    "email": "riyan@google.com",
+    "password": "zGpr&&AR"
+  },
+  {
+    "website": "outlook",
+    "email": "abc@outlook.com",
+    "password": "Yb7BszpN"
+  },
+  {
+    "website": "yahoo",
+    "email": "abc@yahoo.com",
+    "password": "ivlYaj$e"
+  },
+  {
+    "website": "gmail",
+    "email": "abc@gmail.com",
+    "password": "uYb#D4QB"
+  }
+]
