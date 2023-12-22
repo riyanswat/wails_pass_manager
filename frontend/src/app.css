@@ -10,7 +10,7 @@
     max-height: 120px;
     width: auto;
     height: 50%;
-    margin-top: 1px;
+    /* margin-top: 0px; */
     border-radius: 50%;
     transition-duration: 0.7s;
   }
@@ -132,13 +132,14 @@
 }
 
 #alertMessage {
+    font-size: 15px;
     display: none;
     background-color: #3460db;
     color: #fff;
     padding: 5px 10px;
     border-radius: 4px;
     position: absolute;
-    top: 31%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
 }

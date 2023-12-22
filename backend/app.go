@@ -3,6 +3,7 @@ package backend
 import (
 	"context"
 	"embed"
+	"regexp"
 )
 
 var content embed.FS
@@ -12,6 +13,13 @@ type UserData struct {
 	Website  string `json:"website"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+// Editing configuration struct
+type EditConfig struct {
+	WebsiteToEdit string
+	NewEmail      string
+	NewPassword   string
 }
 
 // App struct
@@ -51,6 +59,23 @@ func (a *App) AllData() []UserData {
 	return ShowAll()
 }
 
-func (a *App) Edit(websiteToEdit, newEmail string) string {
-	return EditJSON(websiteToEdit, newEmail)
+func (a *App) Edit(web, email string) string {
+	emailVal := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	re := regexp.MustCompile(emailVal)
+
+	if re.MatchString(email) {
+		data := EditConfig{
+			WebsiteToEdit: web,
+			NewEmail:      email,
+		}
+		return EditJSON(data)
+	} else {
+		data := EditConfig{
+			WebsiteToEdit: web,
+			NewPassword:   email,
+		}
+
+		return EditJSON(data)
+	}
+
 }

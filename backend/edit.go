@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func EditJSON(websiteToEdit, newEmail string) string {
+func EditJSON(config EditConfig) string {
 	filename := "./backend/embed/data.json"
 
 	data, err := os.ReadFile(filename)
@@ -20,8 +20,17 @@ func EditJSON(websiteToEdit, newEmail string) string {
 	}
 
 	for i, user := range users {
-		if strings.ToLower(user.Website) == strings.ToLower(websiteToEdit) {
-			users[i].Email = newEmail
+		if strings.ToLower(user.Website) == strings.ToLower(config.WebsiteToEdit) {
+			// Check if new email is provided
+			if config.NewEmail != "" {
+				users[i].Email = config.NewEmail
+			}
+
+			// Check if new password is provided
+			if config.NewPassword != "" {
+				users[i].Password = config.NewPassword
+			}
+
 			break
 		}
 	}

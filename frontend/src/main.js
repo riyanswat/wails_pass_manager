@@ -227,15 +227,66 @@ class PasswordManager {
   }
 
   handleEdit() {
-    const websiteToEdit = this.websiteElement.value;
-    const newEmail = this.emailElement.value;
-    if (!websiteToEdit || !newEmail) {
-      showAlert(this.alertMessage, "Please enter a website and new email");
-      return;
-    }
-    Edit(websiteToEdit, newEmail).then((res) =>
+    Edit(this.websiteElement.value, this.emailElement.value).then((res) =>
       showAlert(this.alertMessage, res)
     );
+
+    // const inputOptions = new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve({
+    //       email: "@Email",
+    //       password: "..Password",
+    //       both: "||Both",
+    //     });
+    //   }, 300);
+    // });
+
+    // Swal.fire({
+    //   title: "What do you want to edit?",
+    //   input: "radio",
+    //   inputOptions,
+    //   inputValidator: (value) => {
+    //     if (!value) {
+    //       return "You need to choose something!";
+    //     }
+    //   },
+    // }).then(({ value: option }) => {
+    //   if (option) {
+    //     showAlert(this.alertMessage, option);
+    //   }
+    // });
+
+    // Swal.fire({
+    //   title: "Enter your values",
+    //   html:
+    //     '<input id="swal-input1" class="swal2-input" placeholder="Enter value 1">' +
+    //     '<input id="swal-input2" class="swal2-input" placeholder="Enter value 2">',
+    //   showCancelButton: true,
+    //   confirmButtonText: "Submit",
+    //   cancelButtonText: "Cancel",
+    //   focusConfirm: false,
+    //   preConfirm: () => {
+    //     const input1 = document.getElementById("swal-input1").value;
+    //     const input2 = document.getElementById("swal-input2").value;
+    //     return [input1, input2];
+    //   },
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     const [input1, input2] = result.value;
+    //     Swal.fire("You entered:", `Value 1: ${input1}, Value 2: ${input2}`);
+    //   }
+    // });
+
+    //? =======================================================
+    // const websiteToEdit = this.websiteElement.value;
+    // const newEmail = this.emailElement.value;
+    // if (!websiteToEdit || !newEmail) {
+    //   showAlert(this.alertMessage, "Please enter a website and new email");
+    //   return;
+    // }
+    // Edit(websiteToEdit, newEmail).then((res) =>
+    //   showAlert(this.alertMessage, res)
+    // );
   }
 }
 
