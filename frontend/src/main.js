@@ -265,7 +265,7 @@ class PasswordManager {
       '<input id="email-input" class="swal2-input" placeholder="Email">';
     const passwordHtml =
       '<input id="password-input" class="swal2-input" placeholder="Password">';
-    const bothHtml = `<input id="both-input" class="swal2-input" placeholder="Enter value 1"><input id="swal-input2" class="swal2-input" placeholder="Enter value 2">`;
+    const bothHtml = `<input id="email-input" class="swal2-input" placeholder="Enter email"><input id="password-input" class="swal2-input" placeholder="Enter password">`;
 
     const editData = {
       websiteToEdit: this.websiteElement.value,
@@ -302,7 +302,6 @@ class PasswordManager {
         editOption = option;
         //* EDIT EMAIL:
         if (editOption == "email") {
-          showAlert(this.alertMessage, "editOption");
           Swal.fire({
             title: "Enter new email",
             html: emailHtml,
@@ -322,6 +321,70 @@ class PasswordManager {
                 }
               );
               // Swal.fire("You entered:", `${result}`);
+            }
+          });
+          // * EDIT PASSWORD
+        } else if (editOption == "password") {
+          Swal.fire({
+            title: "Enter new password",
+            html: passwordHtml,
+            showCancelButton: true,
+            confirmButtonText: "Submit",
+            cancelButtonText: "Cancel",
+            focusConfirm: false,
+            preConfirm: () => {
+              return document.getElementById("password-input").value;
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log(
+                this.websiteElement.value,
+                result.value,
+                "",
+                "password"
+              );
+              Edit(
+                this.websiteElement.value,
+                "",
+                result.value,
+                "password"
+              ).then((res) => {
+                showAlert(this.alertMessage, res);
+              });
+              // Swal.fire("You entered:", `${result}`);
+            }
+          });
+          // * EDIT BOTH
+        } else if (editOption == "both") {
+          Swal.fire({
+            title: "Enter new email and password",
+            html: bothHtml,
+            showCancelButton: true,
+            confirmButtonText: "Submit",
+            cancelButtonText: "Cancel",
+            focusConfirm: false,
+            preConfirm: () => {
+              return [
+                document.getElementById("email-input").value,
+                document.getElementById("password-input").value,
+              ];
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log(
+                this.websiteElement.value,
+                result.value[0],
+                result.value[1],
+                "both"
+              );
+              Edit(
+                this.websiteElement.value,
+                result.value[0],
+                result.value[1],
+                "both"
+              ).then((res) => {
+                showAlert(this.alertMessage, res);
+              });
             }
           });
         }
