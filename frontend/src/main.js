@@ -13,6 +13,8 @@ import {
 
 class PasswordManager {
   constructor() {
+    // password protection
+    this.passwordProtection = "riyan";
     // input and output elements
     this.passwordElement = document.getElementById("password");
     this.websiteElement = document.getElementById("website");
@@ -169,37 +171,62 @@ class PasswordManager {
   }
 
   handleShowAll() {
-    this.dataTableBody.innerHTML = "";
+    // const protectionHtml =
+    //   '<input id="protect" class="swal2-input" placeholder="Password">';
 
-    this._toggleDisplay();
-    this._clearFields();
+    const { value: password } = Swal.fire({
+      title: "Enter your password",
+      input: "password",
+      inputLabel: "Password",
+      inputPlaceholder: "Enter your password",
+      inputAttributes: {
+        maxlength: "10",
+        autocapitalize: "off",
+        autocorrect: "off",
+      },
+    }).then((password) => {
+      if (password.value != this.passwordProtection) {
+        console.log("==========================", password.value);
+        console.log("==========================", this.passwordProtection);
+        Swal.fire(`Incorrect password`);
+        return;
+      } else {
+        console.log("==========================", password.value);
+        console.log("==========================", this.passwordProtection);
 
-    // this.allDataElem.style.display = "block";
-    // this.appElem.style.display = "none";
-    // this.homeKey.onclick = () => {
-    //   this.allDataElem.style.display = "none";
-    //   this.appElem.style.display = "flex";
-    // };
+        this.dataTableBody.innerHTML = "";
 
-    AllData().then((data) => {
-      // showAlert(this.alertMessage, data);
-      for (let entry of data) {
-        console.log(entry.website);
-        console.log(entry.email);
-        console.log(entry.password);
+        this._toggleDisplay();
+        this._clearFields();
 
-        const row = document.createElement("tr");
-        const websiteCell = document.createElement("td");
-        websiteCell.textContent = entry.website;
-        const emailCell = document.createElement("td");
-        emailCell.textContent = entry.email;
-        const passwordCell = document.createElement("td");
-        passwordCell.textContent = entry.password;
+        // this.allDataElem.style.display = "block";
+        // this.appElem.style.display = "none";
+        // this.homeKey.onclick = () => {
+        //   this.allDataElem.style.display = "none";
+        //   this.appElem.style.display = "flex";
+        // };
 
-        row.appendChild(websiteCell);
-        row.appendChild(emailCell);
-        row.appendChild(passwordCell);
-        this.dataTableBody.appendChild(row);
+        AllData().then((data) => {
+          // showAlert(this.alertMessage, data);
+          for (let entry of data) {
+            // console.log(entry.website);
+            // console.log(entry.email);
+            // console.log(entry.password);
+
+            const row = document.createElement("tr");
+            const websiteCell = document.createElement("td");
+            websiteCell.textContent = entry.website;
+            const emailCell = document.createElement("td");
+            emailCell.textContent = entry.email;
+            const passwordCell = document.createElement("td");
+            passwordCell.textContent = entry.password;
+
+            row.appendChild(websiteCell);
+            row.appendChild(emailCell);
+            row.appendChild(passwordCell);
+            this.dataTableBody.appendChild(row);
+          }
+        });
       }
     });
   }
@@ -386,6 +413,8 @@ class PasswordManager {
         }
       }
     });
+
+    this._clearFields();
   }
 }
 
