@@ -14,7 +14,7 @@ import {
 class PasswordManager {
   constructor() {
     // input and output elements
-    this.passElement = document.getElementById("password");
+    this.passwordElement = document.getElementById("password");
     this.websiteElement = document.getElementById("website");
     this.emailElement = document.getElementById("email");
     this.alertMessage = document.getElementById("alertMessage");
@@ -46,12 +46,40 @@ class PasswordManager {
     this.showAllBtn.addEventListener("click", this.handleShowAll.bind(this));
     this.searchBtn.addEventListener("click", this.handleSearch.bind(this));
     this.editBtn.addEventListener("click", this.handleEdit.bind(this));
+
+    // //? to add shortcuts e.g. ctrl + g for generate:
+    // document.addEventListener("keydown", (event) => {
+    //   // Check if CTRL + G is pressed
+    //   if (event.ctrlKey && event.key === "g") {
+    //     // Your action here
+    //     this.handleGenerate(this.passwordLength);
+    //   }
+    // });
+
+    // document.addEventListener("keydown", (event) => {
+    //   if (event.key === "Enter") {
+    //     Add(
+    //       this.websiteElement.value,
+    //       this.emailElement.value,
+    //       this.passwordElement.value
+    //     ).then((res) => {
+    //       if (res === "Successful") {
+    //         showAlert(this.alertMessage, "Added successfully");
+    //         this._clearFields();
+    //         return;
+    //       } else {
+    //         showAlert(this.alertMessage, `${res}`);
+    //         return;
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   _clearFields() {
     this.websiteElement.value = "";
     this.emailElement.value = "";
-    this.passElement.value = "";
+    this.passwordElement.value = "";
   }
 
   _toggleDisplay() {
@@ -63,18 +91,18 @@ class PasswordManager {
     };
   }
 
-  // Public methods
+  // non-private methods
 
   handleAdd() {
     try {
       Add(
         this.websiteElement.value,
         this.emailElement.value,
-        this.passElement.value
+        this.passwordElement.value
       )
         .then((res) => {
           if (res === "Successful") {
-            showAlert(this.alertMessage, `${res}`);
+            showAlert(this.alertMessage, "Added successfully");
             this._clearFields();
             return;
           } else {
@@ -130,7 +158,7 @@ class PasswordManager {
   handleGenerate() {
     Generate(this.passwordLength)
       .then((result) => {
-        this.passElement.value = result;
+        this.passwordElement.value = result;
         copyToClipboard("Password", result);
       })
       .catch((err) => {
@@ -227,34 +255,78 @@ class PasswordManager {
   }
 
   handleEdit() {
-    Edit(this.websiteElement.value, this.emailElement.value).then((res) =>
-      showAlert(this.alertMessage, res)
-    );
+    if (!this.websiteElement.value) {
+      showAlert(this.alertMessage, "Enter a website to edit");
+      return;
+    }
 
-    // const inputOptions = new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve({
-    //       email: "@Email",
-    //       password: "..Password",
-    //       both: "||Both",
-    //     });
-    //   }, 300);
-    // });
+    let editOption = "";
+    const emailHtml =
+      '<input id="email-input" class="swal2-input" placeholder="Email">';
+    const passwordHtml =
+      '<input id="password-input" class="swal2-input" placeholder="Password">';
+    const bothHtml = `<input id="both-input" class="swal2-input" placeholder="Enter value 1"><input id="swal-input2" class="swal2-input" placeholder="Enter value 2">`;
 
-    // Swal.fire({
-    //   title: "What do you want to edit?",
-    //   input: "radio",
-    //   inputOptions,
-    //   inputValidator: (value) => {
-    //     if (!value) {
-    //       return "You need to choose something!";
-    //     }
-    //   },
-    // }).then(({ value: option }) => {
-    //   if (option) {
-    //     showAlert(this.alertMessage, option);
-    //   }
-    // });
+    const editData = {
+      websiteToEdit: this.websiteElement.value,
+      newEmail: this.emailElement.value,
+      newPassword: this.passwordElement.value,
+      editOption: editOption,
+    };
+
+    // Edit(editData).then((res) =>
+    //     showAlert(this.alertMessage, res)
+    // );
+
+    const inputOptions = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          email: "Email",
+          password: "Password",
+          both: "Both",
+        });
+      }, 300);
+    });
+
+    Swal.fire({
+      title: "What do you want to edit?",
+      input: "radio",
+      inputOptions,
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to choose something!";
+        }
+      },
+    }).then(({ value: option }) => {
+      if (option) {
+        editOption = option;
+        //* EDIT EMAIL:
+        if (editOption == "email") {
+          showAlert(this.alertMessage, "editOption");
+          Swal.fire({
+            title: "Enter new email",
+            html: emailHtml,
+            showCancelButton: true,
+            confirmButtonText: "Submit",
+            cancelButtonText: "Cancel",
+            focusConfirm: false,
+            preConfirm: () => {
+              return document.getElementById("email-input").value;
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log(this.websiteElement.value, result.value, "", "email");
+              Edit(this.websiteElement.value, result.value, "", "email").then(
+                (res) => {
+                  showAlert(this.alertMessage, res);
+                }
+              );
+              // Swal.fire("You entered:", `${result}`);
+            }
+          });
+        }
+      }
+    });
 
     // Swal.fire({
     //   title: "Enter your values",

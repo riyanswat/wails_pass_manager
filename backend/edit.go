@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"strings"
+	// "regexp"
 )
 
 func EditJSON(config EditConfig) string {
@@ -21,14 +22,23 @@ func EditJSON(config EditConfig) string {
 
 	for i, user := range users {
 		if strings.ToLower(user.Website) == strings.ToLower(config.WebsiteToEdit) {
-			// Check if new email is provided
-			if config.NewEmail != "" {
-				users[i].Email = config.NewEmail
-			}
-
-			// Check if new password is provided
-			if config.NewPassword != "" {
-				users[i].Password = config.NewPassword
+			// check edit option and update accordingly
+			switch config.EditOption {
+			case "email":
+				if config.NewEmail != "" {
+					users[i].Email = config.NewEmail
+				}
+			case "password":
+				if config.NewPassword != "" {
+					users[i].Password = config.NewPassword
+				}
+			case "both":
+				if config.NewEmail != "" {
+					users[i].Email = config.NewEmail
+				}
+				if config.NewPassword != "" {
+					users[i].Password = config.NewPassword
+				}
 			}
 
 			break

@@ -20,6 +20,7 @@ type EditConfig struct {
 	WebsiteToEdit string
 	NewEmail      string
 	NewPassword   string
+	EditOption    string // "email", "password", "both"
 }
 
 // App struct
@@ -59,23 +60,170 @@ func (a *App) AllData() []UserData {
 	return ShowAll()
 }
 
-func (a *App) Edit(web, email string) string {
-	emailVal := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
-	re := regexp.MustCompile(emailVal)
+func (a *App) Edit(web, email, password, editOption string) string {
+	spacesPattern := `^\s+$`
+	spacesRe := regexp.MustCompile(spacesPattern)
 
-	if re.MatchString(email) {
-		data := EditConfig{
-			WebsiteToEdit: web,
-			NewEmail:      email,
+	validateInput := func(value, errorMessage string) string {
+		if value == "" || spacesRe.MatchString(value) {
+			return errorMessage
 		}
-		return EditJSON(data)
-	} else {
-		data := EditConfig{
-			WebsiteToEdit: web,
-			NewPassword:   email,
-		}
-
-		return EditJSON(data)
+		return ""
 	}
 
+	websiteError := validateInput(web, "Enter a website")
+	emailError := ""
+	passwordError := ""
+
+	switch editOption {
+	case "email":
+		emailError = validateInput(email, "Enter a valid email")
+	case "password":
+		passwordError = validateInput(password, "Enter a valid password")
+	case "both":
+		emailError = validateInput(email, "Enter valid email")
+		passwordError = validateInput(password, "Enter valid password")
+		if emailError != "" || passwordError != "" {
+			return "Enter valid values"
+		}
+		if email == "" || password == "" {
+			return "Enter both email and password when editing both"
+		}
+	default:
+		return "Invalid edit option"
+	}
+
+	if websiteError != "" {
+		return websiteError
+	}
+
+	data := EditConfig{
+		WebsiteToEdit: web,
+		NewEmail:      email,
+		NewPassword:   password,
+		EditOption:    editOption,
+	}
+
+	return EditJSON(data)
 }
+
+// ? ====================================================================
+
+// func (a *App) Edit(web, email, password, editOption string) string {
+// 	// emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+// 	// emailRe := regexp.MustCompile(emailPattern)
+
+// 	spacesPattern := `^\s+$`
+// 	spacesRe := regexp.MustCompile(spacesPattern)
+
+// 	if web == "" ||
+// 		spacesRe.MatchString(web) {
+// 		return "Enter a website"
+// 	}
+
+// 	if editOption == "email" {
+// 		if email == "" ||
+// 			spacesRe.MatchString(email) {
+// 			return "Enter a valid email"
+// 		}
+// 	}
+
+// 	if editOption == "password" {
+// 		if password == "" ||
+// 			spacesRe.MatchString(password) {
+// 			return "Enter a valid password"
+// 		}
+// 	}
+
+// 	if editOption == "both" {
+// 		if password == "" ||
+// 			spacesRe.MatchString(password) ||
+// 			email == "" ||
+// 			spacesRe.MatchString(email) {
+// 			return "Enter valid values"
+// 		}
+// 	}
+
+// 	if editOption == "both" && (email == "" || password == "" || spacesRe.MatchString(email) || spacesRe.MatchString(password)) {
+// 		return "Enter both email and password when editing both"
+// 	}
+
+// 	if !(editOption == "email" || editOption == "password" || editOption == "both") {
+// 		return "Invalid edit option"
+// 	}
+
+// 	if editOption == "both" {
+// 		data := EditConfig{
+// 			WebsiteToEdit: web,
+// 			NewEmail:      email,
+// 			NewPassword:   password,
+// 			EditOption:    editOption,
+// 		}
+// 		return EditJSON(data)
+// 	}
+
+// 	if editOption == "email" {
+// 		data := EditConfig{
+// 			WebsiteToEdit: web,
+// 			NewEmail:      email,
+// 			EditOption:    editOption,
+// 		}
+
+// 		return EditJSON(data)
+// 	} else if editOption == "password" {
+// 		data := EditConfig{
+// 			WebsiteToEdit: web,
+// 			NewPassword:   password,
+// 			EditOption:    editOption,
+// 		}
+
+// 		return EditJSON(data)
+// 	} else if editOption == "both" {
+// 		data := EditConfig{
+// 			WebsiteToEdit: web,
+// 			NewEmail:      email,
+// 			NewPassword:   password,
+// 			EditOption:    editOption,
+// 		}
+
+// 		return EditJSON(data)
+// 	} else {
+// 		return "Unexpected return option"
+// 	}
+// }
+
+// ? =====================================================================
+
+// func (a *App) Edit(web, email string) string {
+// 	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+// 	emailRe := regexp.MustCompile(emailPattern)
+
+// 	spacesPattern := `^\s+$`
+// 	spacesRe := regexp.MustCompile(spacesPattern)
+
+// 	if web == "" ||
+// 		spacesRe.MatchString(web) {
+// 		return "Enter a website"
+// 	}
+
+// 	if email == "" ||
+// 		spacesRe.MatchString(email) {
+// 		return "Enter the new email"
+// 	}
+
+// 	if emailRe.MatchString(email) {
+// 		data := EditConfig{
+// 			WebsiteToEdit: web,
+// 			NewEmail:      email,
+// 		}
+// 		return EditJSON(data)
+// 	} else {
+// 		data := EditConfig{
+// 			WebsiteToEdit: web,
+// 			NewPassword:   email,
+// 		}
+
+// 		return EditJSON(data)
+// 	}
+
+// }
