@@ -48,7 +48,6 @@ class PasswordManager {
     this.showAllBtn.addEventListener("click", this.handleShowAll.bind(this));
     this.searchBtn.addEventListener("click", this.handleSearch.bind(this));
     this.editBtn.addEventListener("click", this.handleEdit.bind(this));
-
     // //? to add shortcuts e.g. ctrl + g for generate:
     // document.addEventListener("keydown", (event) => {
     //   // Check if CTRL + G is pressed
@@ -232,51 +231,70 @@ class PasswordManager {
   }
 
   handleSearch() {
-    const websiteToSearch = this.websiteElement.value;
-    if (!websiteToSearch) {
-      showAlert(this.alertMessage, "Please enter a website");
-      return;
-    }
-    let itemEmail = "";
-    let itemPass = "";
-
-    Search(websiteToSearch).then((res) => {
-      if (res[1] == "no") {
-        showAlert(this.alertMessage, "Website doesn't exist");
+    const { value: password } = Swal.fire({
+      title: "Enter your password",
+      input: "password",
+      inputLabel: "Password",
+      inputPlaceholder: "Enter your password",
+      inputAttributes: {
+        maxlength: "10",
+        autocapitalize: "off",
+        autocorrect: "off",
+      },
+    }).then((password) => {
+      if (password.value != this.passwordProtection) {
+        console.log("==========================", password.value);
+        console.log("==========================", this.passwordProtection);
+        Swal.fire(`Incorrect password`);
         return;
       } else {
-        itemEmail = res[0].email;
-        itemPass = res[0].password;
+        const websiteToSearch = this.websiteElement.value;
+        if (!websiteToSearch) {
+          showAlert(this.alertMessage, "Please enter a website");
+          return;
+        }
+        let itemEmail = "";
+        let itemPass = "";
 
-        const formattedData = `<strong style="user-select: none;">Email:</strong> ${itemEmail} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
-                <br><strong style="user-select: none;">Password:</strong> ${itemPass} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+        Search(websiteToSearch).then((res) => {
+          if (res[1] == "no") {
+            showAlert(this.alertMessage, "Website doesn't exist");
+            return;
+          } else {
+            itemEmail = res[0].email;
+            itemPass = res[0].password;
 
-        Swal.fire({
-          title: websiteToSearch,
-          html: formattedData,
-          icon: "info",
+            const formattedData = `<strong style="user-select: none;">Email:</strong> ${itemEmail} <span id="copy-email" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>
+                    <br><strong style="user-select: none;">Password:</strong> ${itemPass} <span id="copy-pass" style="cursor: pointer; user-select: none;">&#x1F4CB;</span>`;
+
+            Swal.fire({
+              title: websiteToSearch,
+              html: formattedData,
+              icon: "info",
+            });
+
+            let copyEmail = document.getElementById("copy-email");
+            let copyPass = document.getElementById("copy-pass");
+
+            copyEmail.onclick = function () {
+              copyToClipboard("email", itemEmail);
+              copyEmail.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 10px 0 10px; border-radius: 4px;">Copied!</span>`;
+              setTimeout(() => {
+                copyEmail.innerHTML = "&#x1F4CB;";
+              }, 500);
+            };
+
+            copyPass.onclick = function () {
+              copyToClipboard("password", itemPass);
+              copyPass.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 20px 0 20px; border-radius: 4px;">Copied!</span>`;
+              setTimeout(() => {
+                copyPass.innerHTML = "&#x1F4CB;";
+              }, 500);
+            };
+
+            this._clearFields();
+          }
         });
-
-        let copyEmail = document.getElementById("copy-email");
-        let copyPass = document.getElementById("copy-pass");
-
-        copyEmail.onclick = function () {
-          copyToClipboard("email", itemEmail);
-          copyEmail.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 10px 0 10px; border-radius: 4px;">Copied!</span>`;
-          setTimeout(() => {
-            copyEmail.innerHTML = "&#x1F4CB;";
-          }, 500);
-        };
-
-        copyPass.onclick = function () {
-          copyToClipboard("password", itemPass);
-          copyPass.innerHTML = `<span style="background-color: #3498db; color: #fff; padding: 0 20px 0 20px; border-radius: 4px;">Copied!</span>`;
-          setTimeout(() => {
-            copyPass.innerHTML = "&#x1F4CB;";
-          }, 500);
-        };
-
-        this._clearFields();
       }
     });
   }
