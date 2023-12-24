@@ -110,9 +110,6 @@ func (a *App) AllData() []UserData {
 // ? ====================================================================
 
 func (a *App) Edit(web, email, password, editOption string) string {
-	// emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
-	// emailRe := regexp.MustCompile(emailPattern)
-
 	spacesPattern := `^\s+$`
 	spacesRe := regexp.MustCompile(spacesPattern)
 
@@ -121,39 +118,19 @@ func (a *App) Edit(web, email, password, editOption string) string {
 		return "Enter a website"
 	}
 
-	// if editOption == "email" {
-	// 	if email == "" ||
-	// 		spacesRe.MatchString(email) {
-	// 		return "Enter a valid email"
-	// 	}
-	// }
-
 	if editOption == "email" && (email == "" || spacesRe.MatchString(email)) {
 		return "Enter a valid email"
 	}
-
-	// if editOption == "password" {
-	// 	if password == "" ||
-	// 		spacesRe.MatchString(password) {
-	// 		return "Enter a valid password"
-	// 	}
-	// }
 
 	if editOption == "password" && (password == "" || spacesRe.MatchString(password)) {
 		return "Enter a valid password"
 	}
 
-	if editOption == "both" {
-		if password == "" ||
-			spacesRe.MatchString(password) ||
-			email == "" ||
-			spacesRe.MatchString(email) {
-			return "Enter valid values"
-		}
-	}
-
-	if editOption == "both" && (email == "" || password == "" || spacesRe.MatchString(email) || spacesRe.MatchString(password)) {
-		return "Enter both email and password when editing both"
+	if editOption == "both" && (password == "" ||
+		spacesRe.MatchString(password) ||
+		email == "" ||
+		spacesRe.MatchString(email)) {
+		return "Enter valid values"
 	}
 
 	if !(editOption == "email" || editOption == "password" || editOption == "both") {
@@ -199,39 +176,3 @@ func (a *App) Edit(web, email, password, editOption string) string {
 		return "Unexpected edit option"
 	}
 }
-
-// ? =====================================================================
-
-// func (a *App) Edit(web, email string) string {
-// 	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
-// 	emailRe := regexp.MustCompile(emailPattern)
-
-// 	spacesPattern := `^\s+$`
-// 	spacesRe := regexp.MustCompile(spacesPattern)
-
-// 	if web == "" ||
-// 		spacesRe.MatchString(web) {
-// 		return "Enter a website"
-// 	}
-
-// 	if email == "" ||
-// 		spacesRe.MatchString(email) {
-// 		return "Enter the new email"
-// 	}
-
-// 	if emailRe.MatchString(email) {
-// 		data := EditConfig{
-// 			WebsiteToEdit: web,
-// 			NewEmail:      email,
-// 		}
-// 		return EditJSON(data)
-// 	} else {
-// 		data := EditConfig{
-// 			WebsiteToEdit: web,
-// 			NewPassword:   email,
-// 		}
-
-// 		return EditJSON(data)
-// 	}
-
-// }

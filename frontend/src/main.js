@@ -300,6 +300,23 @@ class PasswordManager {
   }
 
   handleEdit() {
+    // const { value: password } = Swal.fire({
+    //   title: "Enter your password",
+    //   input: "password",
+    //   inputLabel: "Password",
+    //   inputPlaceholder: "Enter your password",
+    //   inputAttributes: {
+    //     maxlength: "10",
+    //     autocapitalize: "off",
+    //     autocorrect: "off",
+    //   },
+    // }).then((password) => {
+    //   if (password.value != this.passwordProtection) {
+    //     Swal.fire(`Incorrect password`);
+    //     return;
+    //   }
+    // });
+
     if (!this.websiteElement.value) {
       showAlert(this.alertMessage, "Enter a website to edit");
       return;
@@ -432,7 +449,7 @@ class PasswordManager {
       }
     });
 
-    this._clearFields();
+    // this._clearFields();
   }
 }
 
