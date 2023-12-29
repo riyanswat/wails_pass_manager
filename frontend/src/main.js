@@ -125,33 +125,55 @@ class PasswordManager {
       showAlert(this.alertMessage, "Please enter a website");
       return;
     }
-    Search(websiteToDelete).then((res) => {
-      if (res[1] == "yes") {
-        //* Confirm deletion
-        Swal.fire({
-          title: "Are you sure?",
-          text: `Do you really want to delete '${websiteToDelete}'?`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#3085d6",
-          confirmButtonText: "Yes, delete it!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            //* Deletion:
-            Delete(websiteToDelete).then((res) => showAlert(alertMessage, res));
 
-            //* Deletion successful
+    const { value: password } = Swal.fire({
+      title: "Enter your password",
+      input: "password",
+      inputLabel: "Password",
+      inputPlaceholder: "Enter your password",
+      inputAttributes: {
+        maxlength: "10",
+        autocapitalize: "off",
+        autocorrect: "off",
+      },
+    }).then((password) => {
+      if (password.value != this.passwordProtection) {
+        console.log("==========================", password.value);
+        console.log("==========================", this.passwordProtection);
+        Swal.fire(`Incorrect password`);
+        return;
+      } else {
+        Search(websiteToDelete).then((res) => {
+          if (res[1] == "yes") {
+            //* Confirm deletion
             Swal.fire({
-              title: "Deleted!",
-              text: `'${websiteToDelete}' has been deleted.`,
-              icon: "success",
+              title: "Are you sure?",
+              text: `Do you really want to delete '${websiteToDelete}'?`,
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#d33",
+              cancelButtonColor: "#3085d6",
+              confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                //* Deletion:
+                Delete(websiteToDelete).then((res) =>
+                  showAlert(alertMessage, res)
+                );
+
+                //* Deletion successful
+                Swal.fire({
+                  title: "Deleted!",
+                  text: `'${websiteToDelete}' has been deleted.`,
+                  icon: "success",
+                });
+                this._clearFields();
+              }
             });
-            this._clearFields();
+          } else if (res[1] == "no") {
+            showAlert(this.alertMessage, "Website doesn't exist");
           }
         });
-      } else if (res[1] == "no") {
-        showAlert(this.alertMessage, "Website doesn't exist");
       }
     });
   }
@@ -231,6 +253,12 @@ class PasswordManager {
   }
 
   handleSearch() {
+    const websiteToSearch = this.websiteElement.value;
+    if (!websiteToSearch) {
+      showAlert(this.alertMessage, "Please enter a website");
+      return;
+    }
+
     const { value: password } = Swal.fire({
       title: "Enter your password",
       input: "password",
@@ -248,11 +276,6 @@ class PasswordManager {
         Swal.fire(`Incorrect password`);
         return;
       } else {
-        const websiteToSearch = this.websiteElement.value;
-        if (!websiteToSearch) {
-          showAlert(this.alertMessage, "Please enter a website");
-          return;
-        }
         let itemEmail = "";
         let itemPass = "";
 
