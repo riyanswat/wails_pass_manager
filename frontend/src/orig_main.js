@@ -92,36 +92,9 @@ class PasswordManager {
     };
   }
 
-  async getPassword() {
-    const { value: password } = await Swal.fire({
-      title: "Enter your password",
-      input: "password",
-      inputLabel: "Password",
-      inputPlaceholder: "Enter your password",
-      inputAttributes: {
-        maxlength: "10",
-        autocapitalize: "off",
-        autocorrect: "off",
-      },
-    });
-
-    return password;
-  }
-
   // non-private methods
 
-  async handleAdd() {
-    const websiteToAdd = this.websiteElement.value;
-    if (!websiteToAdd) {
-      showAlert(this.alertMessage, "Please enter a website");
-      return;
-    }
-
-    const password = await this.getPassword();
-    if (password != this.passwordProtection) {
-      Swal.fire("Incorrect password");
-      return;
-    }
+  handleAdd() {
     try {
       Add(
         this.websiteElement.value,
