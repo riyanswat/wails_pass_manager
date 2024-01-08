@@ -8,7 +8,8 @@ import (
 )
 
 func DeleteFromJSON(websiteToDelete string) string {
-	filename := "./backend/embed/data.json"
+	// filename := "./backend/embed/data.json"
+	filename := "./embed/data.json"
 
 	data, err := os.ReadFile(filename)
 	if err != nil {

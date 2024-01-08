@@ -22,8 +22,8 @@ export function Generate(arg1) {
   return window['go']['backend']['App']['Generate'](arg1);
 }
 
-export function PasswordProtection() {
-  return window['go']['backend']['App']['PasswordProtection']();
+export function PasswordProtect() {
+  return window['go']['backend']['App']['PasswordProtect']();
 }
 
 export function Search(arg1) {

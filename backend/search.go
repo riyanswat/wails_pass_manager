@@ -14,7 +14,8 @@ import (
 // * ------------------------------------
 
 func SearchWebsite(webToSearch string) ([]interface{}, error) {
-	filename := "./backend/embed/data.json"
+	// filename := "./backend/embed/data.json"
+	filename := "./embed/data.json"
 
 	data, err := os.ReadFile(filename)
 	if err != nil {

@@ -9,13 +9,15 @@ import {
   Search,
   AllData,
   Edit,
-  PasswordProtection,
+  PasswordProtect,
 } from "../wailsjs/go/backend/App";
 
 class PasswordManager {
   constructor() {
-    // password protection
-    this.passwordProtection = "riyan";
+    PasswordProtect().then((res) => {
+      console.log("inside constructor", res);
+      this.passwordProtection = res;
+    });
 
     // input and output elements
     this.passwordElement = document.getElementById("password");
@@ -50,6 +52,7 @@ class PasswordManager {
     this.showAllBtn.addEventListener("click", this.handleShowAll.bind(this));
     this.searchBtn.addEventListener("click", this.handleSearch.bind(this));
     this.editBtn.addEventListener("click", this.handleEdit.bind(this));
+
     // //? to add shortcuts e.g. ctrl + g for generate:
     // document.addEventListener("keydown", (event) => {
     //   // Check if CTRL + G is pressed
@@ -94,7 +97,7 @@ class PasswordManager {
     };
   }
 
-  async getPassword() {
+  async _getPassword() {
     const { value: password } = await Swal.fire({
       title: "Enter your password",
       input: "password",
@@ -120,7 +123,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this.getPassword();
+    const password = await this._getPassword();
     if (password != this.passwordProtection) {
       Swal.fire("Incorrect password");
       return;
@@ -157,7 +160,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this.getPassword();
+    const password = await this._getPassword();
     if (password != this.passwordProtection) {
       Swal.fire("Incorrect password");
       return;
@@ -212,7 +215,7 @@ class PasswordManager {
     //   '<input id="protect" class="swal2-input" placeholder="Password">';
 
     // check if password is correct
-    const password = await this.getPassword();
+    const password = await this._getPassword();
     if (password != this.passwordProtection) {
       Swal.fire("Incorrect password");
       return;
@@ -261,7 +264,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this.getPassword();
+    const password = await this._getPassword();
     if (password != this.passwordProtection) {
       Swal.fire("Incorrect password");
       return;
@@ -318,7 +321,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this.getPassword();
+    const password = await this._getPassword();
     if (password != this.passwordProtection) {
       Swal.fire("Incorrect password");
       return;

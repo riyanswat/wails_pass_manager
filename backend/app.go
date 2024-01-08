@@ -8,7 +8,7 @@ import (
 
 var content embed.FS
 
-var password string = "riyan"
+var passwordProtect string = "riyan"
 
 // user json struct
 type UserData struct {
@@ -62,8 +62,8 @@ func (a *App) AllData() []UserData {
 	return ShowAll()
 }
 
-func (a *App) PasswordProtection() string {
-	return password
+func (a *App) PasswordProtect() string {
+	return passwordProtect
 }
 
 // func (a *App) Edit(web, email, password, editOption string) string {

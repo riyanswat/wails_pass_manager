@@ -8,7 +8,8 @@ import (
 )
 
 func AddToJSON(website, email, password string) string {
-	filename := "./backend/embed/data.json"
+	// filename := "./backend/embed/data.json"
+	filename := "./embed/data.json"
 
 	// create data dir
 	if err := os.MkdirAll("embed", os.ModePerm); err != nil {
