@@ -8,6 +8,8 @@ import (
 
 var content embed.FS
 
+var password string = "riyan"
+
 // user json struct
 type UserData struct {
 	Website  string `json:"website"`
@@ -60,16 +62,20 @@ func (a *App) AllData() []UserData {
 	return ShowAll()
 }
 
+func (a *App) PasswordProtection() string {
+	return password
+}
+
 // func (a *App) Edit(web, email, password, editOption string) string {
 // 	spacesPattern := `^\s+$`
 // 	spacesRe := regexp.MustCompile(spacesPattern)
 
-// 	validateInput := func(value, errorMessage string) string {
-// 		if value == "" || spacesRe.MatchString(value) {
-// 			return errorMessage
-// 		}
-// 		return ""
+// validateInput := func(value, errorMessage string) string {
+// 	if value == "" || spacesRe.MatchString(value) {
+// 		return errorMessage
 // 	}
+// 	return ""
+// }
 
 // 	websiteError := validateInput(web, "Enter a website")
 // 	emailError := ""

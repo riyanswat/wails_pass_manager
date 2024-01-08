@@ -9,12 +9,14 @@ import {
   Search,
   AllData,
   Edit,
+  PasswordProtection,
 } from "../wailsjs/go/backend/App";
 
 class PasswordManager {
   constructor() {
     // password protection
     this.passwordProtection = "riyan";
+
     // input and output elements
     this.passwordElement = document.getElementById("password");
     this.websiteElement = document.getElementById("website");
@@ -359,7 +361,7 @@ class PasswordManager {
     }).then(({ value: option }) => {
       if (option) {
         editOption = option;
-        //* EDIT EMAIL:
+        // ? EDIT EMAIL:
         if (editOption == "email") {
           Swal.fire({
             title: "Enter new email",
@@ -381,7 +383,7 @@ class PasswordManager {
               );
             }
           });
-          // * EDIT PASSWORD
+          // ? EDIT PASSWORD
         } else if (editOption == "password") {
           Swal.fire({
             title: "Enter new password",
@@ -412,7 +414,7 @@ class PasswordManager {
               // Swal.fire("You entered:", `${result}`);
             }
           });
-          // * EDIT BOTH
+          // ? EDIT BOTH
         } else if (editOption == "both") {
           Swal.fire({
             title: "Enter new email and password",
