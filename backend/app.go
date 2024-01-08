@@ -8,23 +8,6 @@ import (
 
 var content embed.FS
 
-var passwordProtect string = "riyan"
-
-// user json struct
-type UserData struct {
-	Website  string `json:"website"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-// Editing configuration struct
-type EditConfig struct {
-	WebsiteToEdit string
-	NewEmail      string
-	NewPassword   string
-	EditOption    string // "email", "password", "both"
-}
-
 // App struct
 type App struct {
 	ctx context.Context
@@ -41,7 +24,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Expose backend apis to frontend
+// Expose BACKEND apis to frontend
 func (a *App) Generate(length int) string {
 	return GenerateRandomPassword(length)
 }
@@ -63,7 +46,7 @@ func (a *App) AllData() []UserData {
 }
 
 func (a *App) PasswordProtect() string {
-	return passwordProtect
+	return AppPassword
 }
 
 // func (a *App) Edit(web, email, password, editOption string) string {
