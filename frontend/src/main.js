@@ -1,6 +1,7 @@
 import clipboardy from "clipboardy";
 import Swal from "sweetalert2";
 import { showAlert, copyToClipboard } from "./utils";
+
 // backend apis:
 import {
   Generate,
@@ -14,8 +15,8 @@ import {
 
 class PasswordManager {
   constructor() {
+    // main app password from the backend:
     PasswordProtect().then((res) => {
-      console.log("inside constructor", res);
       this.passwordProtection = res;
     });
 

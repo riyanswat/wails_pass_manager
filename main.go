@@ -10,6 +10,8 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
+// ! IMPORTANT COMMENT:
+//
 //go:embed frontend/dist
 var assets embed.FS
 
@@ -19,7 +21,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:         "Password manager",
+		Title:         "Password Manager",
 		Width:         600,
 		Height:        700,
 		DisableResize: true,

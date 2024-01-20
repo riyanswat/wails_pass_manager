@@ -15,9 +15,9 @@
   transition-duration: 0.7s;
 }
 
-#logo:hover {
+/* #logo:hover {
   transform: rotateZ(360deg);
-}
+} */
 
 .main-heading {
   display: inline-block;
@@ -85,6 +85,10 @@
   transition-duration: 0.1s;
 }
 
+/* .input:focus {
+  border: 1px solid white;
+} */
+
 .buttons {
   width: 300px;
   display: flex;
@@ -147,4 +151,38 @@ background-color: rgb(194, 30, 30);
 
 #all-data {
 display: none;
+}
+
+/* table styles: */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+  /* table-layout: fixed; */
+}
+
+th,
+td,
+table {
+  border: 1px solid #5476a3;
+  padding: 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#head {
+  background-color: #0f151d;
+  color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: #253752;
+}
+
+tr:nth-child(even) {
+  background-color: #364966;
 }
