@@ -114,6 +114,15 @@ class PasswordManager {
     return password;
   }
 
+  async _validatePassword() {
+    const password = await this._getPassword();
+    if (password !== this.passwordProtection) {
+      Swal.fire("Incorrect password");
+      return false;
+    }
+    return true;
+  }
+
   // non-private methods
 
   async handleAdd() {
@@ -123,34 +132,29 @@ class PasswordManager {
       return;
     }
 
-    // check if password is correct
-    const password = await this._getPassword();
-    if (password != this.passwordProtection) {
-      Swal.fire("Incorrect password");
+    // validate password
+    if (!(await this._validatePassword())) {
       return;
     }
-    try {
-      Add(
-        this.websiteElement.value,
-        this.emailElement.value,
-        this.passwordElement.value
-      )
-        .then((res) => {
-          if (res === "Successful") {
-            showAlert(this.alertMessage, "Added successfully");
-            this._clearFields();
-            return;
-          } else {
-            showAlert(this.alertMessage, `${res}`);
-            return;
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } catch (err) {
-      console.error(err);
-    }
+
+    Add(
+      this.websiteElement.value,
+      this.emailElement.value,
+      this.passwordElement.value
+    )
+      .then((res) => {
+        if (res === "Successful") {
+          showAlert(this.alertMessage, "Added successfully");
+          this._clearFields();
+          return;
+        } else {
+          showAlert(this.alertMessage, `${res}`);
+          return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   async handleDelete() {
@@ -161,9 +165,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this._getPassword();
-    if (password != this.passwordProtection) {
-      Swal.fire("Incorrect password");
+    if (!(await this._validatePassword())) {
       return;
     }
 
@@ -216,9 +218,7 @@ class PasswordManager {
     //   '<input id="protect" class="swal2-input" placeholder="Password">';
 
     // check if password is correct
-    const password = await this._getPassword();
-    if (password != this.passwordProtection) {
-      Swal.fire("Incorrect password");
+    if (!(await this._validatePassword())) {
       return;
     }
 
@@ -265,9 +265,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this._getPassword();
-    if (password != this.passwordProtection) {
-      Swal.fire("Incorrect password");
+    if (!(await this._validatePassword())) {
       return;
     }
 
@@ -322,9 +320,7 @@ class PasswordManager {
     }
 
     // check if password is correct
-    const password = await this._getPassword();
-    if (password != this.passwordProtection) {
-      Swal.fire("Incorrect password");
+    if (!(await this._validatePassword())) {
       return;
     }
 

@@ -5,7 +5,7 @@ var AppPassword string = ""
 
 // File path:
 // var FileName string = "./backend/embed/data.json"
-var FileName string = "./data/data.json"
+var FileName string = "./embed/data.json"
 
 // STRUCTS:
 // user json struct
