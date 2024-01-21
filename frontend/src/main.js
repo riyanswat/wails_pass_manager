@@ -19,9 +19,16 @@ class PasswordManager {
     // In 'backend/utils.go', I have:
     // var AppPassword string = "riyan"
     // which is the password of the main app
-    PasswordProtect().then((main_password) => {
-      this.passwordProtection = main_password; // set it to 'main_password' to enable pass protection
-    });
+
+    const storedPassword = sessionStorage.getItem("appPassword");
+    if (storedPassword) {
+      this.passwordProtection = storedPassword;
+    } else {
+      // If no stored password, fetch from the backend
+      PasswordProtect().then((main_password) => {
+        this.passwordProtection = main_password; // set it to 'main_password' to enable pass protection
+      });
+    }
 
     // input and output elements
     this.passwordElement = document.getElementById("password");
@@ -102,6 +109,14 @@ class PasswordManager {
   }
 
   async _getPassword() {
+    // Check if the password is already stored in sessionStorage
+    const storedPassword = sessionStorage.getItem("appPassword");
+
+    if (storedPassword) {
+      return storedPassword;
+    }
+
+    // If not stored, prompt the user
     const { value: password } = await Swal.fire({
       title: "Enter your password",
       input: "password",
@@ -114,16 +129,31 @@ class PasswordManager {
       },
     });
 
+    // Store the entered password in sessionStorage
+    sessionStorage.setItem("appPassword", password);
+
     return password;
   }
 
   async _validatePassword() {
     // Check if password protection is enabled
     if (this.passwordProtection !== null) {
-      const password = await this._getPassword();
-      if (password !== this.passwordProtection) {
-        Swal.fire("Incorrect password");
-        return false;
+      const storedPassword = sessionStorage.getItem("appPassword");
+
+      if (!storedPassword) {
+        // If no stored password, validate the entered password
+        const enteredPassword = await this._getPassword();
+
+        if (enteredPassword !== this.passwordProtection) {
+          Swal.fire("Incorrect password");
+          return false;
+        }
+      } else {
+        // If a password is stored, validate it against the backend password
+        if (storedPassword !== this.passwordProtection) {
+          Swal.fire("Incorrect password");
+          return false;
+        }
       }
     }
     return true;
