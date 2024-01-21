@@ -16,8 +16,11 @@ import {
 class PasswordManager {
   constructor() {
     // main app password from the backend:
-    PasswordProtect().then((res) => {
-      this.passwordProtection = res;
+    // In 'backend/utils.go', I have:
+    // var AppPassword string = "riyan"
+    // which is the password of the main app
+    PasswordProtect().then((main_password) => {
+      this.passwordProtection = main_password; // set it to 'main_password' to enable pass protection
     });
 
     // input and output elements
@@ -115,10 +118,13 @@ class PasswordManager {
   }
 
   async _validatePassword() {
-    const password = await this._getPassword();
-    if (password !== this.passwordProtection) {
-      Swal.fire("Incorrect password");
-      return false;
+    // Check if password protection is enabled
+    if (this.passwordProtection !== null) {
+      const password = await this._getPassword();
+      if (password !== this.passwordProtection) {
+        Swal.fire("Incorrect password");
+        return false;
+      }
     }
     return true;
   }

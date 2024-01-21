@@ -1,7 +1,7 @@
 package backend
 
 // Main app password
-var AppPassword string = ""
+var AppPassword string = "riyan"
 
 // File path:
 // var FileName string = "./backend/embed/data.json"
