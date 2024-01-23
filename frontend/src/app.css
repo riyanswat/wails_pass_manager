@@ -5,6 +5,8 @@
   text-align: center;
 }
 
+/* ----------------------------------------- */
+
 #logo {
   max-width: 120px;
   max-height: 120px;
@@ -19,6 +21,8 @@
   transform: rotateZ(360deg);
 } */
 
+/* ----------------------------------------- */
+
 .main-heading {
   display: inline-block;
   color: #64CCC5;
@@ -29,11 +33,13 @@
   width: 100%;
 }
 
+/* ----------------------------------------- */
 
 .inputs {
   width: 300px;
 }
 
+/* ----------------------------------------- */
 
 .wrapper {
   display: flex;
@@ -41,6 +47,8 @@
   align-items: center;
   width: 100%;
 }
+
+/* ----------------------------------------- */
 
 .input-box {
   display: flex;
@@ -57,6 +65,8 @@
   width: 100%;
 }
 
+/* ----------------------------------------- */
+
 .labels {
   margin-bottom: 5px;
   color: #64CCC5;
@@ -65,6 +75,7 @@
   user-select: none;
 }
 
+/* ----------------------------------------- */
 
 .input {
   width: 99%;
@@ -88,6 +99,8 @@
 /* .input:focus {
   border: 1px solid white;
 } */
+
+/* ----------------------------------------- */
 
 .buttons {
   width: 300px;
@@ -135,6 +148,8 @@ background-color: rgb(207, 35, 35);
 background-color: rgb(194, 30, 30);
 }
 
+/* ----------------------------------------- */
+
 #alertMessage {
   font-size: 15px;
   display: none;
@@ -148,6 +163,7 @@ background-color: rgb(194, 30, 30);
   transform: translate(-50%, -50%);
 }
 
+/* ----------------------------------------- */
 
 #all-data {
 display: none;
@@ -186,3 +202,5 @@ tr:nth-child(odd) {
 tr:nth-child(even) {
   background-color: #364966;
 }
+
+/* ----------------------------------------- */

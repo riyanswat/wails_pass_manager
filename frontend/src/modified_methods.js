@@ -1,5 +1,5 @@
 // use these methods in main.js if you don't want to store the password
-// in session storage and have to enter it over and over again
+// in session storage and have to enter it over and over again in the same session
 
 // --------------------------------------------------------------------------
 

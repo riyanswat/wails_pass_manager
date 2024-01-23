@@ -54,6 +54,8 @@ class PasswordManager {
     this._initEventHandlers();
   }
 
+  // ---------------------------------------------------------
+
   // Private methods:
 
   _initEventHandlers() {
@@ -93,11 +95,15 @@ class PasswordManager {
     // });
   }
 
+  // ---------------------------------------------------------
+
   _clearFields() {
     this.websiteElement.value = "";
     this.emailElement.value = "";
     this.passwordElement.value = "";
   }
+
+  // ---------------------------------------------------------
 
   _toggleDisplay() {
     this.allDataElem.style.display = "block";
@@ -107,6 +113,8 @@ class PasswordManager {
       this.appElem.style.display = "flex";
     };
   }
+
+  // ---------------------------------------------------------
 
   async _getPassword() {
     // Check if the password is already stored in sessionStorage
@@ -135,6 +143,8 @@ class PasswordManager {
     return password;
   }
 
+  // ---------------------------------------------------------
+
   async _validatePassword() {
     // Check if password protection is enabled
     if (this.passwordProtection !== null) {
@@ -158,6 +168,8 @@ class PasswordManager {
     }
     return true;
   }
+
+  // ---------------------------------------------------------
 
   // non-private methods
 
@@ -192,6 +204,8 @@ class PasswordManager {
         console.error(err);
       });
   }
+
+  // ---------------------------------------------------------
 
   async handleDelete() {
     const websiteToDelete = this.websiteElement.value;
@@ -236,6 +250,8 @@ class PasswordManager {
     });
   }
 
+  // ---------------------------------------------------------
+
   handleGenerate() {
     Generate(this.passwordLength)
       .then((result) => {
@@ -248,6 +264,8 @@ class PasswordManager {
 
     showAlert(alertMessage, "Password generated");
   }
+
+  // ---------------------------------------------------------
 
   async handleShowAll() {
     // const protectionHtml =
@@ -292,6 +310,8 @@ class PasswordManager {
       }
     });
   }
+
+  // ---------------------------------------------------------
 
   async handleSearch() {
     const websiteToSearch = this.websiteElement.value;
@@ -349,11 +369,16 @@ class PasswordManager {
     });
   }
 
+  // ---------------------------------------------------------
+
   async handleEdit() {
-    let itemToEdit = this.websiteElement.value;
+    let webToEdit = this.websiteElement.value;
+    // let emailToEdit = this.emailElement.value;
+    // let passwordToEdit = this.passwordElement.value;
+
     let spacesRegex = /^\s+$/;
     // validate input
-    if (!itemToEdit || spacesRegex.test(itemToEdit)) {
+    if (!webToEdit || spacesRegex.test(webToEdit)) {
       showAlert(this.alertMessage, "Please enter a website to edit");
       return;
     }
@@ -363,7 +388,7 @@ class PasswordManager {
       return;
     }
 
-    Search(itemToEdit).then((res) => {
+    Search(webToEdit).then((res) => {
       if (res[1] == "no") {
         // ------------------ ITEM DOESN'T EXIST: ------------------
         console.log("Item doesn't exist");
@@ -379,13 +404,6 @@ class PasswordManager {
         const passwordHtml =
           '<input id="password-input" class="swal2-input" placeholder="Password">';
         const bothHtml = `<input id="email-input" class="swal2-input" placeholder="Enter email"><input id="password-input" class="swal2-input" placeholder="Enter password">`;
-
-        // const editData = {
-        //   websiteToEdit: this.websiteElement.value,
-        //   newEmail: this.emailElement.value,
-        //   newPassword: this.passwordElement.value,
-        //   editOption: editOption,
-        // };
 
         const inputOptions = new Promise((resolve) => {
           setTimeout(() => {
@@ -410,7 +428,7 @@ class PasswordManager {
         }).then(({ value: option }) => {
           if (option) {
             editOption = option;
-            // ? EDIT EMAIL:
+            // --------------------- EDIT EMAIL: ---------------------
             if (editOption == "email") {
               Swal.fire({
                 title: "Enter new email",
@@ -440,7 +458,7 @@ class PasswordManager {
                   });
                 }
               });
-              // ? EDIT PASSWORD
+              // --------------------- EDIT PASSWORD: ---------------------
             } else if (editOption == "password") {
               Swal.fire({
                 title: "Enter new password",
@@ -471,7 +489,7 @@ class PasswordManager {
                   // Swal.fire("You entered:", `${result}`);
                 }
               });
-              // ? EDIT BOTH
+              // --------------------- EDIT BOTH: ---------------------
             } else if (editOption == "both") {
               Swal.fire({
                 title: "Enter new email and password",
