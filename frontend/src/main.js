@@ -350,8 +350,11 @@ class PasswordManager {
   }
 
   async handleEdit() {
-    if (!this.websiteElement.value) {
-      showAlert(this.alertMessage, "Enter a website to edit");
+    let itemToEdit = this.websiteElement.value;
+    let spacesRegex = /^\s+$/;
+    // validate input
+    if (!itemToEdit || spacesRegex.test(itemToEdit)) {
+      showAlert(this.alertMessage, "Please enter a website to edit");
       return;
     }
 
@@ -360,134 +363,152 @@ class PasswordManager {
       return;
     }
 
-    let editOption = "";
-    const emailHtml =
-      '<input id="email-input" class="swal2-input" placeholder="Email">';
-    const passwordHtml =
-      '<input id="password-input" class="swal2-input" placeholder="Password">';
-    const bothHtml = `<input id="email-input" class="swal2-input" placeholder="Enter email"><input id="password-input" class="swal2-input" placeholder="Enter password">`;
+    Search(itemToEdit).then((res) => {
+      if (res[1] == "no") {
+        // ------------------ ITEM DOESN'T EXIST: ------------------
+        console.log("Item doesn't exist");
+        showAlert(this.alertMessage, "Item doesn't exist");
+        return;
+      } else {
+        // ------------------ ITEM EXISTS: ------------------
+        console.log("Item exists");
 
-    // const editData = {
-    //   websiteToEdit: this.websiteElement.value,
-    //   newEmail: this.emailElement.value,
-    //   newPassword: this.passwordElement.value,
-    //   editOption: editOption,
-    // };
+        let editOption = "";
+        const emailHtml =
+          '<input id="email-input" class="swal2-input" placeholder="Email">';
+        const passwordHtml =
+          '<input id="password-input" class="swal2-input" placeholder="Password">';
+        const bothHtml = `<input id="email-input" class="swal2-input" placeholder="Enter email"><input id="password-input" class="swal2-input" placeholder="Enter password">`;
 
-    const inputOptions = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          email: "Email",
-          password: "Password",
-          both: "Both",
+        // const editData = {
+        //   websiteToEdit: this.websiteElement.value,
+        //   newEmail: this.emailElement.value,
+        //   newPassword: this.passwordElement.value,
+        //   editOption: editOption,
+        // };
+
+        const inputOptions = new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              email: "Email",
+              password: "Password",
+              both: "Both",
+            });
+          }, 300);
         });
-      }, 300);
-    });
 
-    Swal.fire({
-      title: "What do you want to edit?",
-      input: "radio",
-      inputOptions,
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return "You need to choose something!";
-        }
-      },
-    }).then(({ value: option }) => {
-      if (option) {
-        editOption = option;
-        // ? EDIT EMAIL:
-        if (editOption == "email") {
-          Swal.fire({
-            title: "Enter new email",
-            html: emailHtml,
-            showCancelButton: true,
-            confirmButtonText: "Submit",
-            cancelButtonText: "Cancel",
-            focusConfirm: false,
-            preConfirm: () => {
-              return document.getElementById("email-input").value;
-            },
-          }).then((result) => {
-            if (result.isConfirmed) {
-              console.log(this.websiteElement.value, result.value, "", "email");
-              Edit(this.websiteElement.value, result.value, "", "email").then(
-                (res) => {
-                  showAlert(this.alertMessage, res);
+        Swal.fire({
+          title: "What do you want to edit?",
+          input: "radio",
+          inputOptions,
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) {
+              return "You need to choose something!";
+            }
+          },
+        }).then(({ value: option }) => {
+          if (option) {
+            editOption = option;
+            // ? EDIT EMAIL:
+            if (editOption == "email") {
+              Swal.fire({
+                title: "Enter new email",
+                html: emailHtml,
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                cancelButtonText: "Cancel",
+                focusConfirm: false,
+                preConfirm: () => {
+                  return document.getElementById("email-input").value;
+                },
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  console.log(
+                    this.websiteElement.value,
+                    result.value,
+                    "",
+                    "email"
+                  );
+                  Edit(
+                    this.websiteElement.value,
+                    result.value,
+                    "",
+                    "email"
+                  ).then((res) => {
+                    showAlert(this.alertMessage, res);
+                  });
                 }
-              );
-            }
-          });
-          // ? EDIT PASSWORD
-        } else if (editOption == "password") {
-          Swal.fire({
-            title: "Enter new password",
-            html: passwordHtml,
-            showCancelButton: true,
-            confirmButtonText: "Submit",
-            cancelButtonText: "Cancel",
-            focusConfirm: false,
-            preConfirm: () => {
-              return document.getElementById("password-input").value;
-            },
-          }).then((result) => {
-            if (result.isConfirmed) {
-              console.log(
-                this.websiteElement.value,
-                result.value,
-                "",
-                "password"
-              );
-              Edit(
-                this.websiteElement.value,
-                "",
-                result.value,
-                "password"
-              ).then((res) => {
-                showAlert(this.alertMessage, res);
               });
-              // Swal.fire("You entered:", `${result}`);
-            }
-          });
-          // ? EDIT BOTH
-        } else if (editOption == "both") {
-          Swal.fire({
-            title: "Enter new email and password",
-            html: bothHtml,
-            showCancelButton: true,
-            confirmButtonText: "Submit",
-            cancelButtonText: "Cancel",
-            focusConfirm: false,
-            preConfirm: () => {
-              return [
-                document.getElementById("email-input").value,
-                document.getElementById("password-input").value,
-              ];
-            },
-          }).then((result) => {
-            if (result.isConfirmed) {
-              console.log(
-                this.websiteElement.value,
-                result.value[0],
-                result.value[1],
-                "both"
-              );
-              Edit(
-                this.websiteElement.value,
-                result.value[0],
-                result.value[1],
-                "both"
-              ).then((res) => {
-                showAlert(this.alertMessage, res);
+              // ? EDIT PASSWORD
+            } else if (editOption == "password") {
+              Swal.fire({
+                title: "Enter new password",
+                html: passwordHtml,
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                cancelButtonText: "Cancel",
+                focusConfirm: false,
+                preConfirm: () => {
+                  return document.getElementById("password-input").value;
+                },
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  console.log(
+                    this.websiteElement.value,
+                    result.value,
+                    "",
+                    "password"
+                  );
+                  Edit(
+                    this.websiteElement.value,
+                    "",
+                    result.value,
+                    "password"
+                  ).then((res) => {
+                    showAlert(this.alertMessage, res);
+                  });
+                  // Swal.fire("You entered:", `${result}`);
+                }
+              });
+              // ? EDIT BOTH
+            } else if (editOption == "both") {
+              Swal.fire({
+                title: "Enter new email and password",
+                html: bothHtml,
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                cancelButtonText: "Cancel",
+                focusConfirm: false,
+                preConfirm: () => {
+                  return [
+                    document.getElementById("email-input").value,
+                    document.getElementById("password-input").value,
+                  ];
+                },
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  console.log(
+                    this.websiteElement.value,
+                    result.value[0],
+                    result.value[1],
+                    "both"
+                  );
+                  Edit(
+                    this.websiteElement.value,
+                    result.value[0],
+                    result.value[1],
+                    "both"
+                  ).then((res) => {
+                    showAlert(this.alertMessage, res);
+                  });
+                }
               });
             }
-          });
-        }
+          }
+        });
       }
     });
-
-    // this._clearFields();
   }
 }
 
